@@ -3,305 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แจ้งเรื่องร้องเรียนชุมชน | บ้านหนองหม้อ 🐾</title>
+    <title>แจ้งเรื่องร้องเรียนชุมชน | บ้านหนองหม้อ</title>
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --bg-color: #fff9f2;
+            --primary-pink: #f06292;
+            --primary-pink-hover: #e91e63;
+            --bg-pink: #fce4ec;
             --card-bg: #ffffff;
-            --primary-mint: #4ecdc4;
-            --primary-pink: #ff8b94;
-            --primary-yellow: #ffaaa5;
-            --primary-green: #a8e6cf;
-            --soft-yellow: #ffd3b6;
-            --text-dark: #4a4e69;
-            --text-muted: #8d99ae;
-            --border-radius-lg: 24px;
-            --border-radius-md: 16px;
-            --border-radius-sm: 12px;
-            --box-shadow: 0 10px 25px rgba(255, 139, 148, 0.12);
+            --text-color: #333333;
+            --border-color: #e0e0e0;
+            --border-radius: 20px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Prompt', 'Mitr', sans-serif;
+            font-family: 'Kanit', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: radial-gradient(#ffd3b6 1.2px, transparent 1.2px), radial-gradient(#a8e6cf 1.2px, #fff9f2 1.2px);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            color: var(--text-dark);
+            background-color: #fce4ec;
+            background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-color);
             min-height: 100vh;
-            padding-bottom: 60px;
+            padding: 30px 15px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 550px;
             margin: 0 auto;
-            padding: 0 20px;
         }
 
-        /* Top Banner Navigation */
-        .app-header {
-            background: linear-gradient(135deg, #ffaaa5 0%, #ff8b94 50%, #ffaaa5 100%);
-            padding: 25px 20px 20px 20px;
-            border-radius: 0 0 35px 35px;
-            box-shadow: 0 8px 20px rgba(255, 139, 148, 0.25);
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
+        /* Top Button */
+        .top-nav {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .brand-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: white;
-            text-shadow: 1px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .brand-title i {
-            font-size: 32px;
-            background: rgba(255,255,255,0.25);
-            padding: 12px;
-            border-radius: 50%;
-        }
-
-        .brand-title h1 {
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .brand-title p {
-            font-size: 13px;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        /* Nav Tabs */
-        .nav-tabs {
-            display: flex;
-            background: rgba(255, 255, 255, 0.4);
-            padding: 6px;
-            border-radius: 50px;
-            backdrop-filter: blur(8px);
-            gap: 5px;
-        }
-
-        .nav-btn {
-            border: none;
-            background: transparent;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #5d4037;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
+        .btn-view-all {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
+            background-color: #f8bbd0;
+            color: #c2185b;
+            padding: 10px 24px;
+            border-radius: 30px;
             text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            border: 1px solid #f48fb1;
+            transition: all 0.3s;
         }
 
-        .nav-btn.active {
-            background: white;
-            color: #ff6b6b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transform: scale(1.05);
+        .btn-view-all:hover {
+            background-color: #f48fb1;
+            color: #ffffff;
         }
 
-        .nav-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        .btn-admin-link {
-            background: #4a4e69;
-            color: white !important;
-        }
-
-        /* Form Card */
-        .form-card {
-            background: white;
-            border-radius: var(--border-radius-lg);
-            padding: 30px;
-            box-shadow: var(--box-shadow);
-            border: 3px solid #ffe3e3;
+        /* Main Form Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px 25px;
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.08);
+            border: 1px solid #f8bbd0;
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
-            font-size: 14px;
             font-weight: 600;
             margin-bottom: 8px;
-            color: var(--text-dark);
+            font-size: 15px;
+            color: #444;
         }
 
-        .form-control {
+        .form-label i {
+            color: var(--primary-pink);
+            margin-right: 6px;
+        }
+
+        .form-control, .form-select, textarea {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: var(--border-radius-sm);
-            border: 2px solid #e2e8f0;
+            padding: 14px 16px;
+            border: 2px solid #eeeeee;
+            border-radius: 12px;
             font-size: 14px;
+            transition: all 0.3s;
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .form-control:focus, .form-select:focus, textarea:focus {
             outline: none;
-            transition: 0.2s;
-        }
-
-        .form-control:focus {
             border-color: var(--primary-pink);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(240, 98, 146, 0.15);
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, #ffaaa5 0%, #ff8b94 100%);
+        /* Upload Multi Images Zone */
+        .upload-zone {
+            border: 2px dashed #f48fb1;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            background: #fff5f8;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .upload-zone:hover {
+            background: #fce4ec;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            color: var(--primary-pink);
+            margin-bottom: 6px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .preview-item img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-remove-img {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(233, 30, 99, 0.85);
             color: white;
             border: none;
-            padding: 14px 28px;
-            border-radius: 40px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #f06292, #e91e63);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 16px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            box-shadow: 0 8px 20px rgba(255, 139, 148, 0.3);
-            transition: 0.2s;
+            transition: 0.3s;
+            box-shadow: 0 6px 18px rgba(233, 30, 99, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(255, 139, 148, 0.4);
+            box-shadow: 0 8px 22px rgba(233, 30, 99, 0.4);
         }
 
-        .btn-public-feed-banner {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #fff0f3;
-            color: #ff4d6d;
-            padding: 12px 20px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 20px;
-            border: 2px solid #ffccd5;
-            transition: all 0.25s ease;
+        /* Success Card */
+        .success-card {
+            display: none;
+            text-align: center;
+            padding: 40px 25px;
         }
 
-        .btn-public-feed-banner:hover {
-            background: #ff4d6d;
-            color: white;
-            transform: translateY(-2px);
+        .ticket-box {
+            background: #fff5f8;
+            border: 2px dashed var(--primary-pink);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #c2185b;
+            margin: 20px 0;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- App Header Banner with Nav Tabs -->
-        <header class="app-header">
-            <div class="header-content">
-                <div class="brand-title">
-                    <i class="fa-solid fa-paw"></i>
-                    <div>
-                        <h1>แจ้งเรื่องร้องเรียน 🐾</h1>
-                        <p>ชุมชนบ้านหนองหม้อ ร่วมสร้างหมู่บ้านน่าอยู่และปลอดภัย</p>
-                    </div>
-                </div>
-
-                <!-- Tabs Navigation -->
-                <nav class="nav-tabs">
-                    <a href="public-feed.html" class="nav-btn">
-                        <i class="fa-solid fa-list-check"></i> รายการทั้งหมด
-                    </a>
-                    <button class="nav-btn active">
-                        <i class="fa-solid fa-paper-plane"></i> แจ้งเรื่องใหม่
-                    </button>
-                    <a href="admin.html" class="nav-btn btn-admin-link">
-                        <i class="fa-solid fa-user-lock"></i> เจ้าหน้าที่
-                    </a>
-                </nav>
-            </div>
-        </header>
-
-        <!-- Quick Access Button -->
-        <div style="text-align: center;">
-            <a href="public-feed.html" class="btn-public-feed-banner">
+        
+        <!-- ปุ่ม ดูเรื่องร้องเรียนทั้งหมด ด้านบน -->
+        <div class="top-nav">
+            <a href="public-feed.html" class="btn-view-all">
                 <i class="fa-solid fa-list-check"></i> ดูเรื่องร้องเรียนทั้งหมด
             </a>
         </div>
 
-        <!-- Form Card -->
-        <div class="form-card">
-            <form id="complaintForm">
+        <!-- ฟอร์มกรอกข้อมูล -->
+        <div class="card" id="formCard">
+            <form id="reportForm">
+                
                 <div class="form-group">
-                    <label><i class="fa-solid fa-pen-nib" style="color: #ff8b94;"></i> หัวข้อเรื่องร้องเรียน</label>
-                    <input type="text" id="topic" class="form-control" placeholder="เช่น ไฟถนนดับ, ขยะตกค้าง" required>
+                    <label class="form-label"><i class="fa-solid fa-pen"></i> หัวข้อเรื่องร้องเรียน</label>
+                    <input type="text" class="form-control" id="topic" placeholder="เช่น ไฟถนนดับ, ขยะตกค้าง" required>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-folder-open" style="color: #ff8b94;"></i> หมวดหมู่</label>
-                    <select id="category" class="form-control" required>
-                        <option value="ถนน/ทางสาธารณะ">🛣️ ถนน / ไฟทาง</option>
-                        <option value="ขยะ/สิ่งแวดล้อม">🧹 ขยะ / สิ่งแวดล้อม</option>
-                        <option value="น้ำประปา/การระบายน้ำ">🚰 น้ำประปา / ท่อระบายน้ำ</option>
-                        <option value="เหตุรำคาญ/เสียงดัง">🔊 เสียงดัง / เดือดร้อน</option>
+                    <label class="form-label"><i class="fa-solid fa-folder"></i> หมวดหมู่</label>
+                    <select class="form-select" id="category" required>
+                        <option value="" disabled selected>-- เลือกหมวดหมู่ --</option>
+                        <option value="ถนน / ไฟทาง">🛣️ ถนน / ไฟทาง</option>
+                        <option value="ขยะ / สิ่งแวดล้อม">🗑️ ขยะ / สิ่งแวดล้อม</option>
+                        <option value="น้ำประปา / การระบายน้ำ">💧 น้ำประปา / การระบายน้ำ</option>
+                        <option value="เสียงดัง / เหตุเดือดร้อน">🔊 เสียงดัง / เหตุเดือดร้อน</option>
                         <option value="อื่นๆ">📌 อื่นๆ</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-location-dot" style="color: #ff8b94;"></i> สถานที่เกิดเหตุ</label>
-                    <input type="text" id="location" class="form-control" placeholder="เช่น ซอย 3 หน้าบ้านเลขที่ 12/4" required>
+                    <label class="form-label"><i class="fa-solid fa-location-dot"></i> สถานที่เกิดเหตุ</label>
+                    <input type="text" class="form-control" id="location" placeholder="เช่น ซอย 3 หน้าบ้านเลขที่ 12/4" required>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-align-left" style="color: #ff8b94;"></i> รายละเอียดปัญหา</label>
-                    <textarea id="detail" class="form-control" rows="4" placeholder="อธิบายรายละเอียดความเดือดร้อน..." required></textarea>
+                    <label class="form-label"><i class="fa-solid fa-align-left"></i> รายละเอียดปัญหา</label>
+                    <textarea id="detail" rows="4" class="form-control" placeholder="อธิบายรายละเอียดความเดือดร้อน..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-user" style="color: #ff8b94;"></i> ชื่อผู้แจ้ง (เพื่อติดต่อ)</label>
-                    <input type="text" id="reporterName" class="form-control" placeholder="ชื่อ-นามสกุล" required>
+                    <label class="form-label"><i class="fa-solid fa-camera"></i> แนบรูปถ่ายประกอบ (สูงสุด 5 รูป)</label>
+                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                        <div style="font-size: 14px; font-weight: 500; color: #444;">กดตรงนี้เพื่อเลือกรูปภาพ</div>
+                        <div style="font-size: 12px; color: #888; margin-top: 4px;">(แนบได้สูงสุด 5 รูป)</div>
+                        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
+                    </div>
+
+                    <div class="preview-grid" id="previewGrid"></div>
                 </div>
 
-                <div class="form-group">
-                    <label><i class="fa-solid fa-phone" style="color: #ff8b94;"></i> เบอร์โทรศัพท์</label>
-                    <input type="tel" id="reporterPhone" class="form-control" placeholder="08X-XXX-XXXX" required>
-                </div>
-
-                <button type="submit" class="btn-submit">
+                <button type="submit" class="btn-submit" id="btnSubmit">
                     <i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐾
                 </button>
             </form>
         </div>
+
+        <!-- หน้าแสดงผลเมื่อส่งสำเร็จ -->
+        <div class="card success-card" id="successCard">
+            <div style="font-size: 60px;">🎉</div>
+            <h2 style="color: #c2185b; margin-top: 10px;">ส่งเรื่องร้องเรียนเรียบร้อยแล้ว!</h2>
+            <p style="font-size: 14px; color: #666; margin-top: 5px;">เจ้าหน้าที่ได้รับข้อมูลของท่านแล้ว</p>
+            
+            <div class="ticket-box" id="ticketNoDisplay">NM-XXXXXXXX-XXXX</div>
+
+            <p style="font-size: 12px; color: #888;">โปรดบันทึกรหัสนี้ไว้เพื่อติดตามสถานะ</p>
+
+            <button onclick="location.reload()" class="btn-submit" style="margin-top: 20px;">
+                + แจ้งเรื่องร้องเรียนใหม่
+            </button>
+        </div>
+
     </div>
 
+    <!-- Firebase SDK (v10 Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8ARiPkKyZvaeMVuNJn5XVIKlUBXnyGFM",
+            authDomain: "compiant-village.firebaseapp.com",
+            projectId: "compiant-village",
+            storageBucket: "compiant-village.firebasestorage.app",
+            messagingSenderId: "715311562609",
+            appId: "1:715311562609:web:bd72d9e19509dce234c0d0",
+            measurementId: "G-GPYMB1K4XE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let imageList = [];
+
+        // จัดการอัปโหลดรูปภาพได้สูงสุด 5 รูป
+        window.handleMultipleImages = function(input) {
+            const files = Array.from(input.files);
+            
+            if (imageList.length + files.length > 5) {
+                alert("สามารถแนบรูปภาพได้สูงสุดไม่เกิน 5 รูปครับ");
+                return;
+            }
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const max_size = 600;
+
+                        if (width > height) {
+                            if (width > max_size) {
+                                height *= max_size / width;
+                                width = max_size;
+                            }
+                        } else {
+                            if (height > max_size) {
+                                width *= max_size / height;
+                                height = max_size;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                        imageList.push(compressedBase64);
+                        renderPreviews();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+            input.value = "";
+        };
+
+        function renderPreviews() {
+            const grid = document.getElementById('previewGrid');
+            grid.innerHTML = "";
+            imageList.forEach((imgSrc, index) => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                item.innerHTML = `
+                    <img src="${imgSrc}">
+                    <button type="button" class="btn-remove-img" onclick="removeSingleImage(${index})"><i class="fa-solid fa-xmark"></i></button>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        window.removeSingleImage = function(index) {
+            imageList.splice(index, 1);
+            renderPreviews();
+        };
+
+        // บันทึกข้อมูลลง Firestore
+        document.getElementById('reportForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึกข้อมูล...';
+
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0,10).replace(/-/g,"");
+            const randomStr = Math.floor(1000 + Math.random() * 9000);
+            const ticketNo = `NM-${dateStr}-${randomStr}`;
+
+            try {
+                await addDoc(collection(db, "reports"), {
+                    ticketNo: ticketNo,
+                    topic: document.getElementById('topic').value,
+                    category: document.getElementById('category').value,
+                    location: document.getElementById('location').value,
+                    detail: document.getElementById('detail').value,
+                    images: imageList,
+                    imageUrl: imageList.length > 0 ? imageList[0] : "",
+                    status: "🟡 รอตรวจสอบ",
+                    assignedDepartment: "",
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('formCard').style.display = 'none';
+                document.getElementById('successCard').style.display = 'block';
+                document.getElementById('ticketNoDisplay').innerText = ticketNo;
+
+            } catch (err) {
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + err.message);
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐾';
+            }
+        });
+    </script>
 </body>
 </html>
