@@ -37,7 +37,7 @@
         }
 
         .container {
-            max-width: 1050px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -197,6 +197,7 @@
         th, td {
             padding: 12px 10px;
             border-bottom: 1px solid #eee;
+            vertical-align: middle;
         }
 
         th {
@@ -211,6 +212,7 @@
             border: 1px solid #ccc;
             font-size: 13px;
             background: white;
+            width: 100%;
         }
 
         .btn-view-img {
@@ -221,9 +223,46 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            display: inline-block;
+            margin-top: 4px;
         }
 
-        /* Modal for Viewing Details/Images */
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            background: #fff3e0;
+            color: #e65100;
+            border: 1px solid #ffe0b2;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .btn-edit:hover {
+            background: #ffe0b2;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ffcdd2;
+        }
+
+        /* Modal Base Style */
         .modal {
             display: none;
             position: fixed;
@@ -266,8 +305,43 @@
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            float: right;
-            margin-top: 15px;
+        }
+
+        .btn-save-modal {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #555;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -354,11 +428,12 @@
                             <th>รายละเอียด / รูป</th>
                             <th>สถานะ</th>
                             <th>หน่วยงานรับผิดชอบ</th>
+                            <th style="text-align: center;">จัดการ</th>
                         </tr>
                     </thead>
                     <tbody id="reportTableBody">
                         <tr>
-                            <td colspan="6" style="text-align: center; color: #888;">กำลังโหลดข้อมูล...</td>
+                            <td colspan="7" style="text-align: center; color: #888;">กำลังโหลดข้อมูล...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -382,14 +457,55 @@
                 <div class="modal-gallery" id="modalGallery"></div>
             </div>
 
-            <button class="btn-close-modal" onclick="closeModal()">ปิดหน้าต่าง</button>
+            <div class="modal-footer">
+                <button class="btn-close-modal" onclick="closeModal()">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Report -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fa-solid fa-pen-to-square"></i> แก้ไขข้อมูลเรื่องร้องเรียน</h3>
+            <input type="hidden" id="editDocId">
+            
+            <div class="form-group">
+                <label>ประเภทปัญหา</label>
+                <select id="editCategory">
+                    <option value="ถนน/ทางสาธารณะ">ถนน / ไฟทาง</option>
+                    <option value="ขยะ/สิ่งแวดล้อม">ขยะ / สิ่งแวดล้อม</option>
+                    <option value="น้ำประปา/การระบายน้ำ">น้ำประปา / ท่อระบายน้ำ</option>
+                    <option value="เหตุรำคาญ/เสียงดัง">เสียงดัง / เหตุเดือดร้อน</option>
+                    <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>หัวข้อเรื่อง</label>
+                <input type="text" id="editTopic">
+            </div>
+
+            <div class="form-group">
+                <label>สถานที่เกิดเหตุ</label>
+                <input type="text" id="editLocation">
+            </div>
+
+            <div class="form-group">
+                <label>รายละเอียดเพิ่มเติม</label>
+                <textarea id="editDetail" rows="3"></textarea>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-close-modal" onclick="closeEditModal()">ยกเลิก</button>
+                <button class="btn-save-modal" onclick="saveEditReport()"><i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข</button>
+            </div>
         </div>
     </div>
 
     <!-- Firebase SDK (v10 Modular) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB8ARiPkKyZvaeMVuNJn5XVIKlUBXnyGFM",
@@ -481,7 +597,7 @@
             tbody.innerHTML = '';
 
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888;">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #888;">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา</td></tr>';
                 return;
             }
 
@@ -490,7 +606,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${item.ticketNo}</strong></td>
-                    <td><small>${item.category || ''}</small><br><strong>${item.topic}</strong></td>
+                    <td><small style="color: #666;">${item.category || ''}</small><br><strong>${item.topic}</strong></td>
                     <td>${item.location}</td>
                     <td>
                         <button class="btn-view-img" onclick="openModal('${item.id}')">
@@ -514,6 +630,16 @@
                             <option value="การประปา" ${item.assignedDepartment === 'การประปา' ? 'selected' : ''}>การประปา</option>
                         </select>
                     </td>
+                    <td style="text-align: center;">
+                        <div class="btn-action-group">
+                            <button class="btn-edit" onclick="openEditModal('${item.id}')" title="แก้ไขข้อมูล">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn-delete" onclick="deleteReport('${item.id}', '${item.ticketNo}')" title="ลบเรื่องนี้">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -535,6 +661,63 @@
             }
         };
 
+        /* Function: Delete Report */
+        window.deleteReport = async function(docId, ticketNo) {
+            if (confirm(`คุณต้องการลบเรื่องร้องเรียนเลขที่ "${ticketNo}" ใช่หรือไม่?\n(เมื่อลบแล้วจะไม่สามารถดึงข้อมูลคืนได้)`)) {
+                try {
+                    await deleteDoc(doc(db, "reports", docId));
+                    alert("ลบข้อมูลเรียบร้อยแล้ว");
+                } catch (err) {
+                    alert("ไม่สามารถลบข้อมูลได้: " + err.message);
+                }
+            }
+        };
+
+        /* Function: Edit Report Modal */
+        window.openEditModal = function(docId) {
+            const item = reportsData.find(r => r.id === docId);
+            if (!item) return;
+
+            document.getElementById('editDocId').value = item.id;
+            document.getElementById('editCategory').value = item.category || 'ถนน/ทางสาธารณะ';
+            document.getElementById('editTopic').value = item.topic || '';
+            document.getElementById('editLocation').value = item.location || '';
+            document.getElementById('editDetail').value = item.detail || '';
+
+            document.getElementById('editModal').style.display = 'flex';
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').style.display = 'none';
+        };
+
+        window.saveEditReport = async function() {
+            const docId = document.getElementById('editDocId').value;
+            const category = document.getElementById('editCategory').value;
+            const topic = document.getElementById('editTopic').value.trim();
+            const location = document.getElementById('editLocation').value.trim();
+            const detail = document.getElementById('editDetail').value.trim();
+
+            if (!topic || !location) {
+                alert("กรุณากรอกหัวข้อเรื่องและสถานที่เกิดเหตุ");
+                return;
+            }
+
+            try {
+                await updateDoc(doc(db, "reports", docId), {
+                    category: category,
+                    topic: topic,
+                    location: location,
+                    detail: detail
+                });
+                alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
+                closeEditModal();
+            } catch (err) {
+                alert("ไม่สามารถบันทึกการแก้ไขได้: " + err.message);
+            }
+        };
+
+        /* Function: View Details Modal */
         window.openModal = function(docId) {
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
@@ -558,7 +741,7 @@
                 imgs.forEach(src => {
                     const img = document.createElement('img');
                     img.src = src;
-                    img.onclick = () => window.open(src, '_blank'); // คลิกเพื่อเปิดดูรูปเต็ม
+                    img.onclick = () => window.open(src, '_blank');
                     gallery.appendChild(img);
                 });
             } else {
