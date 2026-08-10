@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการสำหรับเจ้าหน้าที่ | บ้านหนองหม้อ</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-light: #e8f5e9;
+            --primary-dark: #1b5e20;
+            --bg-color: #f4f8f4;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --border-radius: 16px;
+            --box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+        }
+
+        /* Login Screen */
+        .login-card {
+            max-width: 400px;
+            margin: 60px auto;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            font-size: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Dashboard Screen */
+        .admin-dashboard {
+            display: none;
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .header-bar h1 {
+            font-size: 18px;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 18px 15px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.yellow { border-top-color: #fbc02d; }
+        .stat-card.blue { border-top-color: #1976d2; }
+        .stat-card.orange { border-top-color: #f57c00; }
+        .stat-card.green { border-top-color: #388e3c; }
+
+        .stat-card h3 {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .number {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* Filter Controls Bar */
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: #fdfdfd;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #eaeaea;
+            margin-bottom: 15px;
+        }
+
+        .filter-input, .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .filter-input {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        /* Data Table Section */
+        .table-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #fafafa;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .status-select, .dept-select {
+            padding: 6px 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            background: white;
+        }
+
+        .btn-view-img {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Modal for Viewing Details/Images */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .modal-gallery img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-close-modal {
+            background: #e0e0e0;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            float: right;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="login-card" id="loginCard">
+            <div style="font-size: 50px; margin-bottom: 10px;">🔐</div>
+            <h2>เข้าสู่ระบบเจ้าหน้าที่</h2>
+            <form id="loginForm">
+                <input type="text" id="username" class="form-control" placeholder="ชื่อผู้ใช้งาน" required>
+                <input type="password" id="password" class="form-control" placeholder="รหัสผ่าน" required>
+                <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+            </form>
+            <a href="index.html" style="display: block; margin-top: 15px; color: #888; font-size: 13px; text-decoration: none;">← กลับหน้าแจ้งเรื่อง</a>
+        </div>
+
+        <div class="admin-dashboard" id="adminDashboard">
+            
+            <div class="header-bar">
+                <h1>🏡 ระบบเจ้าหน้าที่ - บ้านหนองหม้อ</h1>
+                <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ</button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card" onclick="setFilterStatus('all')">
+                    <h3>📊 เรื่องทั้งหมด</h3>
+                    <div class="number" id="countAll">0</div>
+                </div>
+                <div class="stat-card yellow" onclick="setFilterStatus('🟡 รอตรวจสอบ')">
+                    <h3>🟡 รอตรวจสอบ</h3>
+                    <div class="number" id="countPending">0</div>
+                </div>
+                <div class="stat-card blue" onclick="setFilterStatus('🔵 รับเรื่องแล้ว')">
+                    <h3>🔵 รับเรื่องแล้ว</h3>
+                    <div class="number" id="countAccepted">0</div>
+                </div>
+                <div class="stat-card orange" onclick="setFilterStatus('🟠 อยู่ระหว่างดำเนินการ')">
+                    <h3>🟠 อยู่ระหว่างดำเนินการ</h3>
+                    <div class="number" id="countProgress">0</div>
+                </div>
+                <div class="stat-card green" onclick="setFilterStatus('🟢 ดำเนินการแล้ว')">
+                    <h3>🟢 ดำเนินการแล้ว</h3>
+                    <div class="number" id="countDone">0</div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                
+                <!-- Search & Filter Controls Bar -->
+                <div class="filter-bar">
+                    <input type="text" id="searchInput" class="filter-input" placeholder="🔍 ค้นหาเลขเรื่อง, หัวข้อ, สถานที่..." oninput="applyFilters()">
+                    
+                    <select id="filterStatus" class="filter-select" onchange="applyFilters()">
+                        <option value="all">-- ทุกสถานะ --</option>
+                        <option value="🟡 รอตรวจสอบ">🟡 รอตรวจสอบ</option>
+                        <option value="🔵 รับเรื่องแล้ว">🔵 รับเรื่องแล้ว</option>
+                        <option value="🟠 อยู่ระหว่างดำเนินการ">🟠 อยู่ระหว่างดำเนินการ</option>
+                        <option value="🟢 ดำเนินการแล้ว">🟢 ดำเนินการแล้ว</option>
+                    </select>
+
+                    <select id="filterCategory" class="filter-select" onchange="applyFilters()">
+                        <option value="all">-- ทุกประเภทปัญหา --</option>
+                        <option value="ถนน/ทางสาธารณะ">ถนน / ไฟทาง</option>
+                        <option value="ขยะ/สิ่งแวดล้อม">ขยะ / สิ่งแวดล้อม</option>
+                        <option value="น้ำประปา/การระบายน้ำ">น้ำประปา / ท่อระบายน้ำ</option>
+                        <option value="เหตุรำคาญ/เสียงดัง">เสียงดัง / เหตุเดือดร้อน</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select>
+
+                    <button onclick="window.print()" style="background: #f5f5f5; border: 1px solid #ccc; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-left: auto;">
+                        <i class="fa-solid fa-print"></i> พิมพ์
+                    </button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>เลขที่เรื่อง</th>
+                            <th>ประเภท / หัวข้อ</th>
+                            <th>สถานที่</th>
+                            <th>รายละเอียด / รูป</th>
+                            <th>สถานะ</th>
+                            <th>หน่วยงานรับผิดชอบ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #888;">กำลังโหลดข้อมูล...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal View Details -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <h3 id="modalTopic" style="color: var(--primary-dark);"></h3>
+            <p style="font-size: 13px; color: #777;" id="modalTicketNo"></p>
+            <hr style="margin: 10px 0; border: none; border-top: 1px solid #eee;">
+            <p><strong>สถานที่:</strong> <span id="modalLocation"></span></p>
+            <p><strong>รายละเอียด:</strong> <span id="modalDetail"></span></p>
+            
+            <div style="margin-top: 10px;">
+                <strong>รูปภาพแนบ (<span id="modalImgCount">0</span>):</strong>
+                <div class="modal-gallery" id="modalGallery"></div>
+            </div>
+
+            <button class="btn-close-modal" onclick="closeModal()">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (v10 Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8ARiPkKyZvaeMVuNJn5XVIKlUBXnyGFM",
+            authDomain: "compiant-village.firebaseapp.com",
+            projectId: "compiant-village",
+            storageBucket: "compiant-village.firebasestorage.app",
+            messagingSenderId: "715311562609",
+            appId: "1:715311562609:web:bd72d9e19509dce234c0d0",
+            measurementId: "G-GPYMB1K4XE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let reportsData = [];
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            if (user === 'admin' && pass === '1234') {
+                document.getElementById('loginCard').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadRealtimeReports();
+            } else {
+                alert('ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง (ลอง admin / 1234)');
+            }
+        });
+
+        window.logout = function() {
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+        };
+
+        function loadRealtimeReports() {
+            onSnapshot(collection(db, "reports"), (snapshot) => {
+                reportsData = [];
+                snapshot.forEach((doc) => {
+                    reportsData.push({ id: doc.id, ...doc.data() });
+                });
+                updateStats();
+                applyFilters();
+            });
+        }
+
+        function updateStats() {
+            let countPending = 0, countAccepted = 0, countProgress = 0, countDone = 0;
+            reportsData.forEach((item) => {
+                if (item.status === "🟡 รอตรวจสอบ") countPending++;
+                else if (item.status === "🔵 รับเรื่องแล้ว") countAccepted++;
+                else if (item.status === "🟠 อยู่ระหว่างดำเนินการ") countProgress++;
+                else if (item.status === "🟢 ดำเนินการแล้ว") countDone++;
+            });
+
+            document.getElementById('countAll').innerText = reportsData.length;
+            document.getElementById('countPending').innerText = countPending;
+            document.getElementById('countAccepted').innerText = countAccepted;
+            document.getElementById('countProgress').innerText = countProgress;
+            document.getElementById('countDone').innerText = countDone;
+        }
+
+        window.setFilterStatus = function(status) {
+            document.getElementById('filterStatus').value = status;
+            applyFilters();
+        };
+
+        window.applyFilters = function() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filterStatus = document.getElementById('filterStatus').value;
+            const filterCategory = document.getElementById('filterCategory').value;
+
+            const filteredData = reportsData.filter(item => {
+                const matchSearch = (item.ticketNo || '').toLowerCase().includes(searchText) ||
+                                    (item.topic || '').toLowerCase().includes(searchText) ||
+                                    (item.location || '').toLowerCase().includes(searchText);
+
+                const matchStatus = (filterStatus === 'all') || (item.status === filterStatus);
+                const matchCategory = (filterCategory === 'all') || (item.category === filterCategory);
+
+                return matchSearch && matchStatus && matchCategory;
+            });
+
+            renderTable(filteredData);
+        };
+
+        function renderTable(data) {
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #888;">ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา</td></tr>';
+                return;
+            }
+
+            data.forEach((item) => {
+                const imgCount = (item.images && item.images.length) ? item.images.length : (item.imageUrl ? 1 : 0);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${item.ticketNo}</strong></td>
+                    <td><small>${item.category || ''}</small><br><strong>${item.topic}</strong></td>
+                    <td>${item.location}</td>
+                    <td>
+                        <button class="btn-view-img" onclick="openModal('${item.id}')">
+                            <i class="fa-solid fa-eye"></i> ดูข้อมูล (${imgCount} รูป)
+                        </button>
+                    </td>
+                    <td>
+                        <select class="status-select" onchange="updateStatus('${item.id}', this.value)">
+                            <option value="🟡 รอตรวจสอบ" ${item.status === '🟡 รอตรวจสอบ' ? 'selected' : ''}>🟡 รอตรวจสอบ</option>
+                            <option value="🔵 รับเรื่องแล้ว" ${item.status === '🔵 รับเรื่องแล้ว' ? 'selected' : ''}>🔵 รับเรื่องแล้ว</option>
+                            <option value="🟠 อยู่ระหว่างดำเนินการ" ${item.status === '🟠 อยู่ระหว่างดำเนินการ' ? 'selected' : ''}>🟠 อยู่ระหว่างดำเนินการ</option>
+                            <option value="🟢 ดำเนินการแล้ว" ${item.status === '🟢 ดำเนินการแล้ว' ? 'selected' : ''}>🟢 ดำเนินการแล้ว</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="dept-select" onchange="updateDepartment('${item.id}', this.value)">
+                            <option value="">-- ระบุหน่วยงาน --</option>
+                            <option value="เทศบาลตำบล" ${item.assignedDepartment === 'เทศบาลตำบล' ? 'selected' : ''}>เทศบาลตำบล</option>
+                            <option value="องค์การบริหารส่วนจังหวัด (อบจ.)" ${item.assignedDepartment === 'องค์การบริหารส่วนจังหวัด (อบจ.)' ? 'selected' : ''}>อบจ.</option>
+                            <option value="การไฟฟ้าส่วนภูมิภาค" ${item.assignedDepartment === 'การไฟฟ้าส่วนภูมิภาค' ? 'selected' : ''}>การไฟฟ้าฯ</option>
+                            <option value="การประปา" ${item.assignedDepartment === 'การประปา' ? 'selected' : ''}>การประปา</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.updateStatus = async function(docId, newStatus) {
+            try {
+                await updateDoc(doc(db, "reports", docId), { status: newStatus });
+            } catch (err) {
+                alert("ไม่สามารถอัปเดตสถานะได้: " + err.message);
+            }
+        };
+
+        window.updateDepartment = async function(docId, newDept) {
+            try {
+                await updateDoc(doc(db, "reports", docId), { assignedDepartment: newDept });
+            } catch (err) {
+                alert("ไม่สามารถอัปเดตหน่วยงานได้: " + err.message);
+            }
+        };
+
+        window.openModal = function(docId) {
+            const item = reportsData.find(r => r.id === docId);
+            if (!item) return;
+
+            document.getElementById('modalTopic').innerText = item.topic;
+            document.getElementById('modalTicketNo').innerText = 'เลขที่เรื่อง: ' + item.ticketNo;
+            document.getElementById('modalLocation').innerText = item.location;
+            document.getElementById('modalDetail').innerText = item.detail || 'ไม่มีข้อมูล';
+
+            const gallery = document.getElementById('modalGallery');
+            gallery.innerHTML = '';
+
+            let imgs = item.images || [];
+            if (imgs.length === 0 && item.imageUrl) {
+                imgs = [item.imageUrl];
+            }
+
+            document.getElementById('modalImgCount').innerText = imgs.length;
+
+            if (imgs.length > 0) {
+                imgs.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.onclick = () => window.open(src, '_blank'); // คลิกเพื่อเปิดดูรูปเต็ม
+                    gallery.appendChild(img);
+                });
+            } else {
+                gallery.innerHTML = '<p style="color: #999; grid-column: span 2;">(ไม่มีรูปภาพแนบมา)</p>';
+            }
+
+            document.getElementById('detailModal').style.display = 'flex';
+        };
+
+        window.closeModal = function() {
+            document.getElementById('detailModal').style.display = 'none';
+        };
+    </script>
+</body>
+</html>
