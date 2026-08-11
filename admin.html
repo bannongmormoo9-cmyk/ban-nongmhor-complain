@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจัดการสำหรับเจ้าหน้าที่ | บ้านหนองหม้อ</title>
+    
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=TH+Sarabun+New:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -246,6 +247,9 @@
         .btn-delete { background: #e74c3c; }
         .btn-delete:hover { background: #c0392b; }
 
+        .btn-pdf { background: #27ae60; }
+        .btn-pdf:hover { background: #1e8449; }
+
         /* Modal for Viewing Details / Editing */
         .modal {
             display: none;
@@ -317,6 +321,121 @@
             margin-bottom: 4px;
             color: #555;
         }
+
+        /* ------------------------------------------------------------- */
+        /* STYLES FOR OFFICIAL GOVERNMENT PRINT / PDF TEMPLATE           */
+        /* ------------------------------------------------------------- */
+        #pdfExportContainer {
+            display: none;
+            background: white;
+            font-family: 'TH Sarabun New', 'TH SarabunPSK', sans-serif;
+            color: #000;
+            line-height: 1.3;
+            font-size: 16pt;
+            width: 100%;
+        }
+
+        .gov-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gov-garuda {
+            width: 2.8cm;
+            height: auto;
+            margin: 0 auto 10px auto;
+            display: block;
+        }
+
+        .gov-title {
+            font-size: 20pt;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .gov-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .gov-table th, .gov-table td {
+            border: 1px solid #000;
+            padding: 6pt 8pt;
+            font-size: 14pt;
+            vertical-align: top;
+        }
+
+        .gov-table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .gov-section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+        }
+
+        .gov-img-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .gov-img-item {
+            text-align: center;
+            border: 1px dashed #666;
+            padding: 5px;
+            width: 45%;
+        }
+
+        .gov-img-item img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .gov-footer-sign {
+            margin-top: 40px;
+            float: right;
+            width: 230px;
+            text-align: center;
+            font-size: 15pt;
+        }
+
+        /* ------------------------------------------------------------- */
+        /* PRINT MEDIA STYLES (บังคับแสดงภาพ และจัดรูปแบบสำหรับบันทึก PDF)  */
+        /* ------------------------------------------------------------- */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+            .container, .modal {
+                display: none !important;
+            }
+            #pdfExportContainer {
+                display: block !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 20mm 20mm 20mm 25mm;
+            }
+        }
     </style>
 </head>
 <body>
@@ -337,7 +456,7 @@
         <div class="admin-dashboard" id="adminDashboard">
             
             <div class="header-bar">
-                <h1>🏡 ระบบเจ้าหน้าที่ - บ้านหนองหม้อ</h1>
+                <h1>🏡 ระบบจัดการเรื่องร้องเรียน - บ้านหนองหม้อ</h1>
                 <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ</button>
             </div>
 
@@ -388,8 +507,8 @@
                         <option value="อื่นๆ">อื่นๆ</option>
                     </select>
 
-                    <button onclick="window.print()" style="background: #f5f5f5; border: 1px solid #ccc; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-left: auto;">
-                        <i class="fa-solid fa-print"></i> พิมพ์
+                    <button onclick="exportSummaryPDF()" style="background: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-left: auto;">
+                        <i class="fa-solid fa-file-pdf"></i> พิมพ์สรุป PDF
                     </button>
                 </div>
 
@@ -474,6 +593,29 @@
         </div>
     </div>
 
+    <!-- =================================================================== -->
+    <!-- PDF / PRINT TEMPLATE CONTAINER (โครงสร้างหนังสือราชการ)                -->
+    <!-- =================================================================== -->
+    <div id="pdfExportContainer">
+        <div class="gov-header">
+            <!-- ตราครุฑ SVG -->
+            <img class="gov-garuda" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><path fill='%23B22222' d='M150 10 L165 50 L200 40 L180 75 L220 85 L185 110 L230 130 L180 145 L200 180 L160 170 L150 210 L140 170 L100 180 L120 145 L70 130 L115 110 L80 85 L120 75 L100 40 L135 50 Z'/></svg>" alt="ตราครุฑ">
+            <div class="gov-title">รายงานผลการดำเนินการเรื่องร้องเรียน / ร้องทุกข์</div>
+            <div style="font-size: 15pt;">หมู่บ้านบ้านหนองหม้อ ตำบลหนองหม้อ</div>
+        </div>
+
+        <div id="pdfBodyContent">
+            <!-- ข้อมูลฉีดผ่าน JavaScript -->
+        </div>
+
+        <div class="gov-footer-sign">
+            <p>ลงชื่อ...................................................</p>
+            <p style="margin-top: 5px;">(...................................................)</p>
+            <p style="margin-top: 5px;">ตำแหน่ง เจ้าหน้าที่ผู้รับผิดชอบ</p>
+            <p style="margin-top: 5px;">วันที่ ....... เดือน .................... พ.ศ. .......</p>
+        </div>
+    </div>
+
     <!-- Firebase SDK (v10 Modular) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -493,6 +635,7 @@
         const db = getFirestore(app);
 
         let reportsData = [];
+        let currentFilteredData = [];
 
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -550,7 +693,7 @@
             const filterStatus = document.getElementById('filterStatus').value;
             const filterCategory = document.getElementById('filterCategory').value;
 
-            const filteredData = reportsData.filter(item => {
+            currentFilteredData = reportsData.filter(item => {
                 const matchSearch = (item.ticketNo || '').toLowerCase().includes(searchText) ||
                                     (item.topic || '').toLowerCase().includes(searchText) ||
                                     (item.location || '').toLowerCase().includes(searchText);
@@ -561,7 +704,7 @@
                 return matchSearch && matchStatus && matchCategory;
             });
 
-            renderTable(filteredData);
+            renderTable(currentFilteredData);
         };
 
         function renderTable(data) {
@@ -604,6 +747,9 @@
                     </td>
                     <td style="text-align: center;">
                         <div class="action-btns">
+                            <button class="btn-action btn-pdf" onclick="exportSinglePDF('${item.id}')" title="พิมพ์/บันทึก PDF">
+                                <i class="fa-solid fa-print"></i>
+                            </button>
                             <button class="btn-action btn-edit" onclick="openEditModal('${item.id}')" title="แก้ไข">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
@@ -720,6 +866,139 @@
 
         window.closeModal = function() {
             document.getElementById('detailModal').style.display = 'none';
+        };
+
+        // ===================================================================
+        // 📄 SYSTEM PRINT / SAVE AS PDF (แก้ปัญหาหน้าว่าง + แก้ปัญหารูปไม่ติด 100%)
+        // ===================================================================
+
+        // ฟังก์ชั่นช่วยรอให้รูปภาพทั้งหมดใน container โหลดเสร็จก่อนเปิดหน้าพิมพ์
+        function waitForImagesToLoad(container) {
+            const images = container.getElementsByTagName('img');
+            const promises = [];
+
+            for (let img of images) {
+                if (!img.complete) {
+                    promises.push(new Promise((resolve) => {
+                        img.onload = resolve;
+                        img.onerror = resolve; // ข้ามรูปที่เสีย เพื่อไม่ให้ค้าง
+                    }));
+                }
+            }
+            return Promise.all(promises);
+        }
+
+        // 1. ส่งออกเอกสาร PDF แบบเดี่ยว
+        window.exportSinglePDF = async function(docId) {
+            const item = reportsData.find(r => r.id === docId);
+            if (!item) return;
+
+            const pdfContainer = document.getElementById('pdfExportContainer');
+            const pdfBody = document.getElementById('pdfBodyContent');
+            
+            let imgs = item.images || [];
+            if (imgs.length === 0 && item.imageUrl) {
+                imgs = [item.imageUrl];
+            }
+
+            let imgHTML = '';
+            if (imgs.length > 0) {
+                imgHTML = `
+                    <div class="gov-section-title">รูปภาพประกอบสถานที่ / ปัญหาที่ได้รับแจ้ง</div>
+                    <div class="gov-img-grid">
+                        ${imgs.map((src, idx) => `
+                            <div class="gov-img-item">
+                                <img src="${src}" crossorigin="anonymous" />
+                                <div style="font-size: 12pt; margin-top: 4px;">ภาพที่ ${idx+1}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            pdfBody.innerHTML = `
+                <table style="width: 100%; font-size: 16pt; margin-bottom: 15px;">
+                    <tr>
+                        <td style="width: 65%;"><strong>เลขที่เรื่อง:</strong> ${item.ticketNo || '-'}</td>
+                        <td><strong>วันที่บันทึก:</strong> ${new Date().toLocaleDateString('th-TH')}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ประเภทเรื่อง:</strong> ${item.category || '-'}</td>
+                        <td><strong>สถานะปัจจุบัน:</strong> ${item.status || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>หน่วยงานรับผิดชอบ:</strong> ${item.assignedDepartment || 'ยังไม่ได้ระบุ'}</td>
+                    </tr>
+                </table>
+
+                <div class="gov-section-title">รายละเอียดข้อมูลเรื่องร้องเรียน</div>
+                <p><strong>หัวข้อเรื่อง:</strong> ${item.topic || '-'}</p>
+                <p><strong>สถานที่เกิดเหตุ/จุดสังเกต:</strong> ${item.location || '-'}</p>
+                <p style="margin-top: 8px;"><strong>รายละเอียดปัญหา:</strong></p>
+                <div style="text-indent: 25px; text-align: justify; margin-bottom: 15px;">
+                    ${item.detail || 'ไม่มีข้อมูลรายละเอียดเพิ่มเติม'}
+                </div>
+
+                ${imgHTML}
+            `;
+
+            // แสดง Container ชั่วคราวเพื่อให้เบราว์เซอร์ดาวน์โหลดรูปภาพ
+            pdfContainer.style.display = 'block';
+
+            // หน่วงเวลารอรูปภาพโหลดเสร็จสมบูรณ์ก่อนเปิดหน้าสั่งพิมพ์
+            await waitForImagesToLoad(pdfContainer);
+
+            // เปิดหน้าสั่งพิมพ์ของ Browser
+            window.print();
+
+            // ซ่อน Container กลับตามเดิมเมื่อสั่งพิมพ์เสร็จ
+            pdfContainer.style.display = 'none';
+        };
+
+        // 2. ส่งออกเอกสารสรุปตาราง PDF รวม
+        window.exportSummaryPDF = async function() {
+            if (currentFilteredData.length === 0) {
+                alert("ไม่มีข้อมูลสำหรับส่งออก PDF");
+                return;
+            }
+
+            const pdfContainer = document.getElementById('pdfExportContainer');
+            const pdfBody = document.getElementById('pdfBodyContent');
+            
+            let rowsHTML = currentFilteredData.map((item, index) => `
+                <tr>
+                    <td style="text-align: center;">${index + 1}</td>
+                    <td style="text-align: center;">${item.ticketNo || '-'}</td>
+                    <td><strong>${item.topic}</strong><br><small>${item.category || ''}</small></td>
+                    <td>${item.location}</td>
+                    <td>${item.assignedDepartment || '-'}</td>
+                    <td style="text-align: center;">${item.status}</td>
+                </tr>
+            `).join('');
+
+            pdfBody.innerHTML = `
+                <p style="font-size: 15pt; margin-bottom: 10px;"><strong>สรุปรายการเรื่องร้องเรียนทั้งหมด จำนวน:</strong> ${currentFilteredData.length} รายการ</p>
+                <table class="gov-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">ลำดับ</th>
+                            <th style="width: 18%;">เลขที่เรื่อง</th>
+                            <th>หัวข้อ / ประเภท</th>
+                            <th style="width: 22%;">สถานที่</th>
+                            <th style="width: 18%;">หน่วยงานรับผิดชอบ</th>
+                            <th style="width: 16%;">สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHTML}
+                    </tbody>
+                </table>
+            `;
+
+            pdfContainer.style.display = 'block';
+            await waitForImagesToLoad(pdfContainer);
+            window.print();
+            pdfContainer.style.display = 'none';
         };
     </script>
 </body>
