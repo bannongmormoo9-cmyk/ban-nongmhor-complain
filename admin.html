@@ -37,7 +37,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1150px;
             margin: 0 auto;
         }
 
@@ -212,7 +212,6 @@
             border: 1px solid #ccc;
             font-size: 13px;
             background: white;
-            width: 100%;
         }
 
         .btn-view-img {
@@ -223,46 +222,31 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            display: inline-block;
-            margin-top: 4px;
         }
 
-        .btn-action-group {
+        /* Action Buttons */
+        .action-btns {
             display: flex;
-            gap: 6px;
+            gap: 5px;
         }
 
-        .btn-edit {
-            background: #fff3e0;
-            color: #e65100;
-            border: 1px solid #ffe0b2;
+        .btn-action {
+            border: none;
             padding: 6px 10px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            color: white;
             transition: 0.2s;
         }
 
-        .btn-edit:hover {
-            background: #ffe0b2;
-        }
+        .btn-edit { background: #f39c12; }
+        .btn-edit:hover { background: #d68910; }
 
-        .btn-delete {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-        }
+        .btn-delete { background: #e74c3c; }
+        .btn-delete:hover { background: #c0392b; }
 
-        .btn-delete:hover {
-            background: #ffcdd2;
-        }
-
-        /* Modal Base Style */
+        /* Modal for Viewing Details / Editing */
         .modal {
             display: none;
             position: fixed;
@@ -305,6 +289,8 @@
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
+            float: right;
+            margin-top: 15px;
         }
 
         .btn-save-modal {
@@ -314,13 +300,9 @@
             padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            margin-left: 8px;
-        }
-
-        .modal-footer {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
+            float: right;
+            margin-top: 15px;
+            margin-right: 8px;
         }
 
         .form-group {
@@ -334,14 +316,6 @@
             font-weight: 600;
             margin-bottom: 4px;
             color: #555;
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 14px;
         }
     </style>
 </head>
@@ -457,48 +431,46 @@
                 <div class="modal-gallery" id="modalGallery"></div>
             </div>
 
-            <div class="modal-footer">
-                <button class="btn-close-modal" onclick="closeModal()">ปิดหน้าต่าง</button>
-            </div>
+            <button class="btn-close-modal" onclick="closeModal()">ปิดหน้าต่าง</button>
         </div>
     </div>
 
-    <!-- Modal Edit Report -->
+    <!-- Modal Edit Details -->
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <h3 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fa-solid fa-pen-to-square"></i> แก้ไขข้อมูลเรื่องร้องเรียน</h3>
-            <input type="hidden" id="editDocId">
-            
-            <div class="form-group">
-                <label>ประเภทปัญหา</label>
-                <select id="editCategory">
-                    <option value="ถนน/ทางสาธารณะ">ถนน / ไฟทาง</option>
-                    <option value="ขยะ/สิ่งแวดล้อม">ขยะ / สิ่งแวดล้อม</option>
-                    <option value="น้ำประปา/การระบายน้ำ">น้ำประปา / ท่อระบายน้ำ</option>
-                    <option value="เหตุรำคาญ/เสียงดัง">เสียงดัง / เหตุเดือดร้อน</option>
-                    <option value="อื่นๆ">อื่นๆ</option>
-                </select>
-            </div>
+            <h3 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fa-solid fa-pen-to-square"></i> แก้ไขข้อมูลการแจ้งเรื่อง</h3>
+            <form id="editForm">
+                <input type="hidden" id="editDocId">
+                
+                <div class="form-group">
+                    <label for="editCategory">ประเภทปัญหา</label>
+                    <select id="editCategory" class="form-control" required>
+                        <option value="ถนน/ทางสาธารณะ">ถนน / ไฟทาง</option>
+                        <option value="ขยะ/สิ่งแวดล้อม">ขยะ / สิ่งแวดล้อม</option>
+                        <option value="น้ำประปา/การระบายน้ำ">น้ำประปา / ท่อระบายน้ำ</option>
+                        <option value="เหตุรำคาญ/เสียงดัง">เสียงดัง / เหตุเดือดร้อน</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label>หัวข้อเรื่อง</label>
-                <input type="text" id="editTopic">
-            </div>
+                <div class="form-group">
+                    <label for="editTopic">หัวข้อเรื่อง</label>
+                    <input type="text" id="editTopic" class="form-control" required>
+                </div>
 
-            <div class="form-group">
-                <label>สถานที่เกิดเหตุ</label>
-                <input type="text" id="editLocation">
-            </div>
+                <div class="form-group">
+                    <label for="editLocation">สถานที่</label>
+                    <input type="text" id="editLocation" class="form-control" required>
+                </div>
 
-            <div class="form-group">
-                <label>รายละเอียดเพิ่มเติม</label>
-                <textarea id="editDetail" rows="3"></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="editDetail">รายละเอียด</label>
+                    <textarea id="editDetail" class="form-control" rows="3"></textarea>
+                </div>
 
-            <div class="modal-footer">
-                <button class="btn-close-modal" onclick="closeEditModal()">ยกเลิก</button>
-                <button class="btn-save-modal" onclick="saveEditReport()"><i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข</button>
-            </div>
+                <button type="button" class="btn-close-modal" onclick="closeEditModal()">ยกเลิก</button>
+                <button type="submit" class="btn-save-modal"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูล</button>
+            </form>
         </div>
     </div>
 
@@ -606,7 +578,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${item.ticketNo}</strong></td>
-                    <td><small style="color: #666;">${item.category || ''}</small><br><strong>${item.topic}</strong></td>
+                    <td><small>${item.category || ''}</small><br><strong>${item.topic}</strong></td>
                     <td>${item.location}</td>
                     <td>
                         <button class="btn-view-img" onclick="openModal('${item.id}')">
@@ -631,11 +603,11 @@
                         </select>
                     </td>
                     <td style="text-align: center;">
-                        <div class="btn-action-group">
-                            <button class="btn-edit" onclick="openEditModal('${item.id}')" title="แก้ไขข้อมูล">
+                        <div class="action-btns">
+                            <button class="btn-action btn-edit" onclick="openEditModal('${item.id}')" title="แก้ไข">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="btn-delete" onclick="deleteReport('${item.id}', '${item.ticketNo}')" title="ลบเรื่องนี้">
+                            <button class="btn-action btn-delete" onclick="deleteReport('${item.id}', '${item.ticketNo}')" title="ลบ">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -661,9 +633,9 @@
             }
         };
 
-        /* Function: Delete Report */
+        /* ฟังก์ชั่นลบข้อมูล */
         window.deleteReport = async function(docId, ticketNo) {
-            if (confirm(`คุณต้องการลบเรื่องร้องเรียนเลขที่ "${ticketNo}" ใช่หรือไม่?\n(เมื่อลบแล้วจะไม่สามารถดึงข้อมูลคืนได้)`)) {
+            if (confirm(`คุณต้องการลบรายการเลขที่เรื่อง "${ticketNo}" ใช่หรือไม่?`)) {
                 try {
                     await deleteDoc(doc(db, "reports", docId));
                     alert("ลบข้อมูลเรียบร้อยแล้ว");
@@ -673,7 +645,7 @@
             }
         };
 
-        /* Function: Edit Report Modal */
+        /* ฟังก์ชั่นแก้ไขข้อมูล */
         window.openEditModal = function(docId) {
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
@@ -691,33 +663,28 @@
             document.getElementById('editModal').style.display = 'none';
         };
 
-        window.saveEditReport = async function() {
+        document.getElementById('editForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const docId = document.getElementById('editDocId').value;
-            const category = document.getElementById('editCategory').value;
-            const topic = document.getElementById('editTopic').value.trim();
-            const location = document.getElementById('editLocation').value.trim();
-            const detail = document.getElementById('editDetail').value.trim();
-
-            if (!topic || !location) {
-                alert("กรุณากรอกหัวข้อเรื่องและสถานที่เกิดเหตุ");
-                return;
-            }
+            const newCategory = document.getElementById('editCategory').value;
+            const newTopic = document.getElementById('editTopic').value;
+            const newLocation = document.getElementById('editLocation').value;
+            const newDetail = document.getElementById('editDetail').value;
 
             try {
                 await updateDoc(doc(db, "reports", docId), {
-                    category: category,
-                    topic: topic,
-                    location: location,
-                    detail: detail
+                    category: newCategory,
+                    topic: newTopic,
+                    location: newLocation,
+                    detail: newDetail
                 });
-                alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
+                alert("บันทึกข้อมูลเรียบร้อยแล้ว");
                 closeEditModal();
             } catch (err) {
-                alert("ไม่สามารถบันทึกการแก้ไขได้: " + err.message);
+                alert("ไม่สามารถบันทึกข้อมูลได้: " + err.message);
             }
-        };
+        });
 
-        /* Function: View Details Modal */
         window.openModal = function(docId) {
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
