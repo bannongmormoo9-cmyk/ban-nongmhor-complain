@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แจ้งเรื่องร้องเรียนชุมชน | บ้านหนองหม้อ</title>
+    <title>ศูนย์ร้องเรียนร้องทุกข์ บ้านหนองหม้อ หมู่ 9</title>
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,13 +12,15 @@
     
     <style>
         :root {
-            --primary-pink: #f06292;
-            --primary-pink-hover: #e91e63;
-            --bg-pink: #fce4ec;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --border-color: #e0e0e0;
-            --border-radius: 20px;
+            --primary-blue: #3a98b9;
+            --primary-blue-hover: #2e7a96;
+            --secondary-green: #52ab98;
+            --accent-soft: #eef8f6;
+            --bg-gradient: linear-gradient(135deg, #e6f4f8 0%, #f4faf8 50%, #e0f2f1 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --text-color: #2c3e50;
+            --border-color: #c5e3ec;
+            --border-radius: 24px;
         }
 
         * {
@@ -28,125 +30,286 @@
             font-family: 'Kanit', sans-serif;
         }
 
+        /* Synchronized Float Animations (บาลานซ์จังหวะดุ๊กดิ๊ก) */
+        @keyframes floatLeft {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-7px) rotate(2deg); }
+        }
+
+        @keyframes floatRight {
+            0%, 100% { transform: translateY(0px) rotate(3deg); }
+            50% { transform: translateY(-7px) rotate(-2deg); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 8px 25px rgba(58, 152, 185, 0.2); }
+            50% { box-shadow: 0 12px 30px rgba(82, 171, 152, 0.35); }
+            100% { box-shadow: 0 8px 25px rgba(58, 152, 185, 0.2); }
+        }
+
         body {
-            background-color: #fce4ec;
-            background-image: radial-gradient(#f8bbd0 1px, transparent 1px);
-            background-size: 20px 20px;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: var(--text-color);
             min-height: 100vh;
             padding: 30px 15px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ลวดลายพื้นหลัง */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(#3a98b9 0.75px, transparent 0.75px), 
+                radial-gradient(#52ab98 0.75px, #f0f7f9 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.25;
+            z-index: -1;
         }
 
         .container {
             max-width: 550px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        /* Header Title */
+        .header-title {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* รูปเด็กดุ๊กดิ๊ก - ตั้งค่าสมมาตรซ้ายขวา */
+        .child-avatar {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.12));
+            flex-shrink: 0;
+        }
+
+        .child-avatar.boy {
+            animation: floatLeft 3s ease-in-out infinite;
+        }
+
+        .child-avatar.girl {
+            animation: floatRight 3s ease-in-out infinite;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            color: #5c6b73;
+            font-weight: 400;
+            background: rgba(255, 255, 255, 0.65);
+            display: inline-block;
+            padding: 4px 18px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         /* Top Button */
         .top-nav {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .btn-view-all {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background-color: #f8bbd0;
-            color: #c2185b;
+            background: linear-gradient(135deg, #ffffff, #eaf5f8);
+            color: var(--primary-blue);
             padding: 10px 24px;
             border-radius: 30px;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-            border: 1px solid #f48fb1;
-            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(58, 152, 185, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .btn-view-all:hover {
-            background-color: #f48fb1;
+            background: var(--primary-blue);
             color: #ffffff;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 18px rgba(58, 152, 185, 0.25);
+        }
+
+        .btn-view-all i {
+            transition: transform 0.3s;
+        }
+
+        .btn-view-all:hover i {
+            transform: rotate(15deg) scale(1.2);
         }
 
         /* Main Form Card */
         .card {
             background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border-radius: var(--border-radius);
-            padding: 30px 25px;
-            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.08);
-            border: 1px solid #f8bbd0;
+            padding: 35px 25px 30px;
+            box-shadow: 0 15px 35px rgba(58, 152, 185, 0.12);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            position: relative;
+            overflow: visible; /* เปิดเพื่อไม่ให้โมเดลสัตว์โดนตัดขอบ */
+        }
+
+        /* แถบเส้นขอบตกแต่งด้านบน */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 6px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            background: linear-gradient(90deg, #3a98b9, #52ab98, #a8e6cf, #3a98b9);
+            background-size: 300% 100%;
+            animation: pulseGlow 4s infinite alternate;
+        }
+
+        /* ตัวการ์ตูนสัตว์ตกแต่ง จัดวางสมมาตรซ้าย-ขวาที่ขอบบนของการ์ด */
+        .mascot-animal {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            top: -22px;
+            z-index: 5;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
+        }
+
+        .mascot-cat { 
+            left: 20px; 
+            animation: floatLeft 3.5s infinite ease-in-out; 
+        }
+
+        .mascot-bear { 
+            right: 20px; 
+            animation: floatRight 3.5s infinite ease-in-out; 
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            position: relative;
         }
 
         .form-label {
-            display: block;
+            display: flex;
+            align-items: center;
             font-weight: 600;
             margin-bottom: 8px;
             font-size: 15px;
-            color: #444;
+            color: var(--text-color);
         }
 
         .form-label i {
-            color: var(--primary-pink);
-            margin-right: 6px;
+            color: var(--primary-blue);
+            margin-right: 8px;
+            background: #e8f4f8;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .form-group:hover .form-label i {
+            transform: scale(1.15) rotate(-8deg);
+            background: var(--primary-blue);
+            color: white;
         }
 
         .form-control, .form-select, textarea {
             width: 100%;
             padding: 14px 16px;
-            border: 2px solid #eeeeee;
-            border-radius: 12px;
+            border: 2px solid #dbebf0;
+            border-radius: 14px;
             font-size: 14px;
             transition: all 0.3s;
-            background-color: #fafafa;
+            background-color: rgba(249, 252, 254, 0.9);
             color: #333;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .form-control:focus, .form-select:focus, textarea:focus {
             outline: none;
-            border-color: var(--primary-pink);
+            border-color: var(--primary-blue);
             background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(240, 98, 146, 0.15);
+            box-shadow: 0 0 0 4px rgba(58, 152, 185, 0.18);
+            transform: translateY(-1px);
         }
 
         /* Upload Multi Images Zone */
         .upload-zone {
-            border: 2px dashed #f48fb1;
-            border-radius: 12px;
-            padding: 20px;
+            border: 2px dashed #9bc8d8;
+            border-radius: 16px;
+            padding: 22px 15px;
             text-align: center;
-            background: #fff5f8;
+            background: linear-gradient(180deg, #f2f9fc 0%, #eaf5f8 100%);
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
         }
 
         .upload-zone:hover {
-            background: #fce4ec;
+            background: #e1f1f6;
+            border-color: var(--primary-blue);
+            transform: scale(1.01);
         }
 
         .upload-icon {
-            font-size: 32px;
-            color: var(--primary-pink);
+            font-size: 34px;
+            color: var(--primary-blue);
             margin-bottom: 6px;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .upload-zone:hover .upload-icon {
+            animation: wiggle 0.5s ease-in-out infinite;
         }
 
         .preview-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 12px;
+            gap: 12px;
+            margin-top: 14px;
         }
 
         .preview-item {
             position: relative;
             width: 100%;
             padding-top: 100%;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid #fff;
         }
 
         .preview-item img {
@@ -158,23 +321,29 @@
 
         .btn-remove-img {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            background: rgba(233, 30, 99, 0.85);
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             font-size: 12px;
             cursor: pointer;
             z-index: 2;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-remove-img:hover {
+            transform: scale(1.2);
         }
 
         /* Submit Button */
         .btn-submit {
             width: 100%;
-            background: linear-gradient(135deg, #f06292, #e91e63);
+            background: linear-gradient(135deg, #3a98b9 0%, #52ab98 100%);
             color: white;
             border: none;
             border-radius: 30px;
@@ -182,18 +351,27 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 6px 18px rgba(233, 30, 99, 0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 20px rgba(58, 152, 185, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(233, 30, 99, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(58, 152, 185, 0.4);
+            background: linear-gradient(135deg, #2e7a96 0%, #419684 100%);
+        }
+
+        .btn-submit i {
+            transition: transform 0.3s;
+        }
+
+        .btn-submit:hover i {
+            transform: translateX(4px) rotate(-10deg);
         }
 
         /* Success Card */
@@ -204,15 +382,36 @@
         }
 
         .ticket-box {
-            background: #fff5f8;
-            border: 2px dashed var(--primary-pink);
-            padding: 15px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #eef8f6, #e1f3f0);
+            border: 2px dashed var(--secondary-green);
+            padding: 16px;
+            border-radius: 16px;
             font-size: 22px;
             font-weight: 700;
-            color: #c2185b;
+            color: #2b7a4b;
             margin: 20px 0;
             letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(82, 171, 152, 0.15);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .child-avatar {
+                width: 36px;
+                height: 36px;
+            }
+            .header-title h1 {
+                font-size: 17px;
+                gap: 6px;
+            }
+            .card {
+                padding: 25px 18px 20px;
+            }
+            .mascot-animal {
+                width: 34px;
+                height: 34px;
+                top: -18px;
+            }
         }
     </style>
 </head>
@@ -220,15 +419,29 @@
 
     <div class="container">
         
+        <!-- ส่วนหัวเรื่อง (บาลานซ์ เด็กชาย ซ้าย - เด็กหญิง ขวา) -->
+        <div class="header-title">
+            <h1>
+                <img src="https://api.iconify.design/emojione-v1:boy.svg" class="child-avatar boy" alt="เด็กชายสวัสดี">
+                <span>ศูนย์ร้องเรียนร้องทุกข์ บ้านหนองหม้อ หมู่ 9</span>
+                <img src="https://api.iconify.design/emojione-v1:girl.svg" class="child-avatar girl" alt="เด็กหญิงสวัสดี">
+            </h1>
+            <p>🐾 ระบบรับเรื่องและติดตามปัญหาความเดือดร้อนของชุมชน</p>
+        </div>
+
         <!-- ปุ่ม ดูเรื่องร้องเรียนทั้งหมด ด้านบน -->
         <div class="top-nav">
             <a href="public-feed.html" class="btn-view-all">
-                <i class="fa-solid fa-list-check"></i> ดูเรื่องร้องเรียนทั้งหมด
+                <i class="fa-solid fa-list-check"></i> ดูเรื่องร้องเรียนทั้งหมด 🔍
             </a>
         </div>
 
         <!-- ฟอร์มกรอกข้อมูล -->
         <div class="card" id="formCard">
+            <!-- การ์ตูนสัตว์ตกแต่งขนาบข้าง ซ้าย-ขวา แบบบาลานซ์ -->
+            <img src="https://api.iconify.design/noto:cat-face.svg" class="mascot-animal mascot-cat" alt="แมวน่ารัก">
+            <img src="https://api.iconify.design/noto:bear.svg" class="mascot-animal mascot-bear" alt="หมีน่ารัก">
+
             <form id="reportForm">
                 
                 <div class="form-group">
@@ -262,8 +475,8 @@
                     <label class="form-label"><i class="fa-solid fa-camera"></i> แนบรูปถ่ายประกอบ (สูงสุด 5 รูป)</label>
                     <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
                         <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                        <div style="font-size: 14px; font-weight: 500; color: #444;">กดตรงนี้เพื่อเลือกรูปภาพ</div>
-                        <div style="font-size: 12px; color: #888; margin-top: 4px;">(แนบได้สูงสุด 5 รูป)</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #3a98b9;">กดตรงนี้เพื่อเลือกรูปภาพ 📸</div>
+                        <div style="font-size: 12px; color: #7c8c94; margin-top: 4px;">(แนบได้สูงสุด 5 รูป)</div>
                         <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
                     </div>
 
@@ -271,23 +484,23 @@
                 </div>
 
                 <button type="submit" class="btn-submit" id="btnSubmit">
-                    <i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐾
+                    <i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐰
                 </button>
             </form>
         </div>
 
         <!-- หน้าแสดงผลเมื่อส่งสำเร็จ -->
         <div class="card success-card" id="successCard">
-            <div style="font-size: 60px;">🎉</div>
-            <h2 style="color: #c2185b; margin-top: 10px;">ส่งเรื่องร้องเรียนเรียบร้อยแล้ว!</h2>
-            <p style="font-size: 14px; color: #666; margin-top: 5px;">เจ้าหน้าที่ได้รับข้อมูลของท่านแล้ว</p>
+            <div style="font-size: 65px; animation: floatLeft 2s infinite ease-in-out;">🎉</div>
+            <h2 style="color: var(--primary-blue); margin-top: 10px;">ส่งเรื่องร้องเรียนเรียบร้อยแล้ว!</h2>
+            <p style="font-size: 14px; color: #666; margin-top: 5px;">เจ้าหน้าที่ได้รับข้อมูลของท่านแล้ว 🐶</p>
             
             <div class="ticket-box" id="ticketNoDisplay">NM-XXXXXXXX-XXXX</div>
 
             <p style="font-size: 12px; color: #888;">โปรดบันทึกรหัสนี้ไว้เพื่อติดตามสถานะ</p>
 
             <button onclick="location.reload()" class="btn-submit" style="margin-top: 20px;">
-                + แจ้งเรื่องร้องเรียนใหม่
+                + แจ้งเรื่องร้องเรียนใหม่ 🐥
             </button>
         </div>
 
@@ -413,7 +626,7 @@
             } catch (err) {
                 alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + err.message);
                 btnSubmit.disabled = false;
-                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐾';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ส่งเรื่องร้องเรียน 🐰';
             }
         });
     </script>
