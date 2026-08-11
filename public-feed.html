@@ -21,11 +21,11 @@
             --soft-yellow: #ffd3b6;
             --text-dark: #4a4e69;
             --text-muted: #8d99ae;
-            --border-radius-lg: 24px;
+            --border-radius-lg: 20px;
             --border-radius-md: 16px;
             --border-radius-sm: 12px;
-            --box-shadow: 0 10px 25px rgba(255, 139, 148, 0.12);
-            --box-shadow-hover: 0 15px 30px rgba(255, 139, 148, 0.22);
+            --box-shadow: 0 8px 20px rgba(255, 139, 148, 0.1);
+            --box-shadow-hover: 0 12px 25px rgba(255, 139, 148, 0.2);
         }
 
         * {
@@ -46,7 +46,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -268,65 +268,51 @@
             cursor: pointer;
         }
 
-        /* Cards Feed Grid */
+        /* Cards Feed - Horizontal Layout (การ์ดแนวนอน) */
         .feed-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-            gap: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .feed-card {
             background: white;
             border-radius: var(--border-radius-lg);
-            overflow: hidden;
+            padding: 18px 22px;
             box-shadow: var(--box-shadow);
             border: 2px solid #fce4ec;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             display: flex;
-            flex-direction: column;
-            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
         }
 
         .feed-card:hover {
-            transform: translateY(-6px);
+            transform: translateX(4px);
             box-shadow: var(--box-shadow-hover);
             border-color: #ff8b94;
         }
 
-        .card-img-wrapper {
-            position: relative;
-            height: 170px;
-            background: #f8bbd0;
-            overflow: hidden;
+        .card-main-info {
+            flex: 1;
+            min-width: 0;
         }
 
-        .card-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .no-img-placeholder {
+        .card-header-meta {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100%;
-            background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%);
-            color: #e65100;
-            font-size: 13px;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .status-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-            backdrop-filter: blur(4px);
+            display: inline-block;
         }
 
         .status-pending { background: #fff9c4; color: #f57f17; }
@@ -334,81 +320,73 @@
         .status-progress { background: #ffe0b2; color: #e65100; }
         .status-done { background: #e8f5e9; color: #2e7d32; }
 
-        .ticket-tag {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-        }
-
-        .card-body {
-            padding: 18px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
         .card-category {
             font-size: 12px;
             color: #ff8b94;
             font-weight: 600;
-            margin-bottom: 4px;
         }
 
         .card-title {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-dark);
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-detail-preview {
+            font-size: 13px;
+            color: #666;
             margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
             line-height: 1.4;
         }
 
         .card-location {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .card-footer-info {
-            margin-top: auto;
-            padding-top: 12px;
-            border-top: 1px dashed #f0f0f0;
+        .card-action-side {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            min-width: 140px;
+            gap: 10px;
         }
 
         .btn-view-detail {
             background: #fff0f3;
             color: #ff4d6d;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            border: 1px solid #ffd1d7;
+            padding: 10px 18px;
+            border-radius: 25px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            margin-top: 10px;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
+            white-space: nowrap;
         }
 
         .btn-view-detail:hover {
             background: #ff4d6d;
             color: white;
+            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.3);
         }
 
-        /* Public Modal Detail */
+        /* Modal View Detail & Images Popup */
         .modal {
             display: none;
             position: fixed;
@@ -425,7 +403,7 @@
             background: white;
             border-radius: var(--border-radius-lg);
             padding: 25px;
-            max-width: 580px;
+            max-width: 600px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -440,11 +418,16 @@
             font-size: 20px;
             color: #aaa;
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .modal-close-icon:hover {
+            color: #ff4d6d;
         }
 
         .modal-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 10px;
             margin: 15px 0;
         }
@@ -454,7 +437,58 @@
             height: 120px;
             object-fit: cover;
             border-radius: 12px;
+            cursor: zoom-in;
+            border: 2px solid #f0f0f0;
+            transition: 0.2s;
+        }
+
+        .modal-gallery img:hover {
+            transform: scale(1.03);
+            border-color: #ff8b94;
+        }
+
+        /* Image Lightbox Viewer (ป๊อปอัปขยายรูปภาพ) */
+        .image-lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .image-lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: contain;
+            border: 3px solid white;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            font-size: 30px;
+            color: white;
             cursor: pointer;
+            background: rgba(255,255,255,0.2);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: #ff4d6d;
+            transform: scale(1.1);
         }
 
         .pdpa-notice {
@@ -465,6 +499,24 @@
             font-size: 12px;
             color: #666;
             margin-top: 15px;
+        }
+
+        @media (max-width: 650px) {
+            .feed-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .card-action-side {
+                width: 100%;
+                align-items: flex-start;
+                margin-top: 10px;
+                border-top: 1px dashed #eee;
+                padding-top: 10px;
+            }
+            .btn-view-detail {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -555,10 +607,10 @@
             </select>
         </div>
 
-        <!-- Public Feed Cards Grid -->
+        <!-- Public Feed Cards Grid (Horizontal Flow) -->
         <div class="feed-grid" id="publicFeedGrid">
             <!-- Loading State -->
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #888;">
+            <div style="text-align: center; padding: 40px; color: #888;">
                 <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
                 <p style="margin-top: 10px;">กำลังโหลดรายการร้องเรียนน่ารักๆ...</p>
             </div>
@@ -566,18 +618,21 @@
 
     </div>
 
-    <!-- Modal View Detail -->
+    <!-- Modal View Detail & Images Popup -->
     <div class="modal" id="publicDetailModal">
         <div class="modal-content">
             <i class="fa-solid fa-xmark modal-close-icon" onclick="closeModal()"></i>
             
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <span id="modalStatusBadge" class="status-badge" style="position: static;"></span>
+                <span id="modalStatusBadge" class="status-badge"></span>
                 <span style="font-size: 12px; color: var(--text-muted);" id="modalTicketNo"></span>
             </div>
 
             <h2 id="modalTopic" style="color: var(--text-dark); font-size: 20px; margin-bottom: 10px;"></h2>
             
+            <p style="font-size: 13px; color: #666; margin-bottom: 6px;">
+                <i class="fa-regular fa-calendar-check" style="color: #ff8b94;"></i> <strong>วันที่แจ้ง:</strong> <span id="modalDate"></span>
+            </p>
             <p style="font-size: 13px; color: #666; margin-bottom: 6px;">
                 <i class="fa-solid fa-location-dot" style="color: #ff8b94;"></i> <strong>สถานที่:</strong> <span id="modalLocation"></span>
             </p>
@@ -585,13 +640,13 @@
                 <i class="fa-solid fa-building" style="color: #ff8b94;"></i> <strong>หน่วยงานรับผิดชอบ:</strong> <span id="modalDept">ยังไม่ได้ระบุ</span>
             </p>
 
-            <div style="background: #fff9f2; padding: 12px 15px; border-radius: 14px; font-size: 14px; color: #4a4e69; margin-bottom: 15px;">
+            <div style="background: #fff9f2; padding: 12px 15px; border-radius: 14px; font-size: 14px; color: #4a4e69; margin-bottom: 15px; line-height: 1.6;">
                 <strong>รายละเอียดปัญหา:</strong><br>
                 <span id="modalDetail"></span>
             </div>
 
             <div style="margin-bottom: 10px;">
-                <strong style="font-size: 13px; color: #555;">📸 รูปภาพแนบประกอบ (<span id="modalImgCount">0</span>):</strong>
+                <strong style="font-size: 13px; color: #555;">📸 รูปภาพแนบประกอบ (<span id="modalImgCount">0</span>): <span style="font-size: 11px; color: #888; font-weight: normal;">(คลิกรูปเพื่อขยายใหญ่)</span></strong>
                 <div class="modal-gallery" id="modalGallery"></div>
             </div>
 
@@ -599,6 +654,12 @@
                 <i class="fa-solid fa-shield-halved"></i> <strong>คุ้มครองความเป็นส่วนตัว:</strong> รายชื่อและข้อมูลส่วนบุคคลของผู้แจ้งถูกปกปิดตามนโยบายความเป็นส่วนตัวของชุมชน
             </div>
         </div>
+    </div>
+
+    <!-- Image Lightbox Modal (หน้าจอแสดงรูปใหญ่) -->
+    <div class="image-lightbox" id="imageLightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></span>
+        <img id="lightboxImage" src="" alt="Enlarged Image" onclick="event.stopPropagation()">
     </div>
 
     <!-- Firebase SDK (v10 Modular) -->
@@ -620,6 +681,35 @@
         const db = getFirestore(app);
 
         let publicReports = [];
+
+        // ฟังก์ชันแปลงวันที่ ให้เป็นรูปแบบ วัน/เดือน/พ.ศ. ภาษาไทย
+        function formatThaiDate(rawDate) {
+            if (!rawDate) return 'ไม่ระบุวันที่';
+            
+            let dateObj;
+            if (rawDate.seconds) {
+                dateObj = new Date(rawDate.seconds * 1000);
+            } else if (typeof rawDate === 'string' || typeof rawDate === 'number') {
+                dateObj = new Date(rawDate);
+            }
+
+            if (!dateObj || isNaN(dateObj.getTime())) {
+                return rawDate; // คืนค่าเดิมหากเป็นสตริงวันเวลาอยู่แล้ว
+            }
+
+            const monthNames = [
+                "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+                "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+            ];
+
+            const day = dateObj.getDate();
+            const month = monthNames[dateObj.getMonth()];
+            const yearBE = dateObj.getFullYear() + 543;
+            const hours = String(dateObj.getHours()).padStart(2, '0');
+            const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+
+            return `${day} ${month} ${yearBE} (${hours}:${minutes} น.)`;
+        }
 
         // Realtime Data Load
         onSnapshot(collection(db, "reports"), (snapshot) => {
@@ -678,7 +768,7 @@
 
             if (data.length === 0) {
                 container.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 50px 20px; background: white; border-radius: 20px;">
+                    <div style="text-align: center; padding: 50px 20px; background: white; border-radius: 20px;">
                         <div style="font-size: 50px;">🐶🐾</div>
                         <h3 style="color: #ff8b94; margin-top: 10px;">ไม่พบรายการร้องเรียนที่คุณค้นหา</h3>
                         <p style="font-size: 13px; color: #aaa;">ลองเปลี่ยนคำค้นหาหรือเลือกหมวดหมู่ใหม่อีกครั้งนะ</p>
@@ -691,42 +781,49 @@
                 const card = document.createElement('div');
                 card.className = 'feed-card';
 
-                // Image thumbnail logic
-                let imgSrc = '';
-                if (item.images && item.images.length > 0) {
-                    imgSrc = item.images[0];
-                } else if (item.imageUrl) {
-                    imgSrc = item.imageUrl;
-                }
+                // Check images count for badge
+                let imgCount = 0;
+                if (item.images && item.images.length > 0) imgCount = item.images.length;
+                else if (item.imageUrl) imgCount = 1;
 
-                // Badge style
+                // Status Badge CSS
                 let badgeClass = 'status-pending';
                 if (item.status === '🔵 รับเรื่องแล้ว') badgeClass = 'status-accepted';
                 else if (item.status === '🟠 อยู่ระหว่างดำเนินการ') badgeClass = 'status-progress';
                 else if (item.status === '🟢 ดำเนินการแล้ว') badgeClass = 'status-done';
 
+                // วันที่แบบ พ.ศ.
+                const formattedDate = formatThaiDate(item.createdAt || item.date);
+
                 card.innerHTML = `
-                    <div class="card-img-wrapper">
-                        ${imgSrc ? `<img src="${imgSrc}" alt="รูปภาพร้องเรียน">` : `
-                            <div class="no-img-placeholder">
-                                <i class="fa-solid fa-camera-retro fa-2x"></i>
-                                <span style="margin-top: 5px;">ไม่มีรูปภาพแนบ</span>
-                            </div>
-                        `}
-                        <span class="status-badge ${badgeClass}">${item.status || '🟡 รอรับเรื่อง'}</span>
-                        <span class="ticket-tag">#${item.ticketNo}</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-category">📂 ${item.category || 'เรื่องร้องเรียนทั่วไป'}</div>
+                    <!-- ส่วนข้อมูลหลัก (แนวนอน) -->
+                    <div class="card-main-info">
+                        <div class="card-header-meta">
+                            <span class="status-badge ${badgeClass}">${item.status || '🟡 รอรับเรื่อง'}</span>
+                            <span class="card-category">📂 ${item.category || 'ทั่วไป'}</span>
+                            <span style="font-size: 11px; color: var(--text-muted); margin-left: auto;">
+                                #${item.ticketNo} | <i class="fa-regular fa-clock"></i> ${formattedDate}
+                            </span>
+                        </div>
+
                         <div class="card-title">${item.topic}</div>
+                        <div class="card-detail-preview">${item.detail || 'ไม่มีรายละเอียดเพิ่มเติม'}</div>
+
                         <div class="card-location">
                             <i class="fa-solid fa-location-dot" style="color: #ff8b94;"></i> ${item.location}
                         </div>
-                        <div class="card-footer-info">
-                            <button class="btn-view-detail" onclick="openModal('${item.id}')">
-                                <i class="fa-solid fa-paw"></i> ดูรายละเอียด
-                            </button>
-                        </div>
+                    </div>
+
+                    <!-- ส่วนปุ่มกดเปิด Popup ด้านขวา -->
+                    <div class="card-action-side">
+                        ${imgCount > 0 ? `
+                            <span style="font-size: 11px; color: #888; background: #f0f4f8; padding: 3px 8px; border-radius: 10px;">
+                                <i class="fa-solid fa-image" style="color: #4ecdc4;"></i> มีรูปแนบ (${imgCount})
+                            </span>
+                        ` : ''}
+                        <button class="btn-view-detail" onclick="openModal('${item.id}')">
+                            <i class="fa-solid fa-eye"></i> ดูข้อมูลทั้งหมด
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -739,12 +836,18 @@
 
             document.getElementById('modalTopic').innerText = item.topic;
             document.getElementById('modalTicketNo').innerText = 'เลขเรื่อง: ' + item.ticketNo;
+            document.getElementById('modalDate').innerText = formatThaiDate(item.createdAt || item.date);
             document.getElementById('modalLocation').innerText = item.location;
             document.getElementById('modalDept').innerText = item.assignedDepartment || 'เจ้าหน้าที่กำลังมอบหมาย';
             document.getElementById('modalDetail').innerText = item.detail || 'ไม่มีข้อมูลรายละเอียดเพิ่มเติม';
 
             const badge = document.getElementById('modalStatusBadge');
             badge.innerText = item.status || '🟡 รอรับเรื่อง';
+            badge.className = 'status-badge ' + (
+                item.status === '🔵 รับเรื่องแล้ว' ? 'status-accepted' :
+                item.status === '🟠 อยู่ระหว่างดำเนินการ' ? 'status-progress' :
+                item.status === '🟢 ดำเนินการแล้ว' ? 'status-done' : 'status-pending'
+            );
             
             let imgs = item.images || [];
             if (imgs.length === 0 && item.imageUrl) imgs = [item.imageUrl];
@@ -757,7 +860,8 @@
                 imgs.forEach(url => {
                     const img = document.createElement('img');
                     img.src = url;
-                    img.onclick = () => window.open(url, '_blank');
+                    img.title = "คลิกเพื่อขยายรูปใหญ่";
+                    img.onclick = () => openLightbox(url); // เพิ่มคำสั่งเปิด Lightbox เมื่อคลิก
                     gallery.appendChild(img);
                 });
             } else {
@@ -769,6 +873,16 @@
 
         window.closeModal = function() {
             document.getElementById('publicDetailModal').style.display = 'none';
+        };
+
+        // ฟังก์ชันเปิด-ปิด Lightbox สำหรับขยายรูปใหญ่
+        window.openLightbox = function(url) {
+            document.getElementById('lightboxImage').src = url;
+            document.getElementById('imageLightbox').style.display = 'flex';
+        };
+
+        window.closeLightbox = function() {
+            document.getElementById('imageLightbox').style.display = 'none';
         };
     </script>
 </body>
