@@ -30,7 +30,7 @@
             font-family: 'Kanit', sans-serif;
         }
 
-        /* Synchronized Float Animations (บาลานซ์จังหวะดุ๊กดิ๊ก) */
+        /* Synchronized Float Animations */
         @keyframes floatLeft {
             0%, 100% { transform: translateY(0px) rotate(-3deg); }
             50% { transform: translateY(-7px) rotate(2deg); }
@@ -41,14 +41,9 @@
             50% { transform: translateY(-7px) rotate(-2deg); }
         }
 
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
         @keyframes pulseGlow {
             0% { box-shadow: 0 8px 25px rgba(58, 152, 185, 0.2); }
-            50% { box-shadow: 0 12px 30px rgba(82, 171, 152, 0.35); }
+            50% { shadow: 0 12px 30px rgba(82, 171, 152, 0.35); }
             100% { box-shadow: 0 8px 25px rgba(58, 152, 185, 0.2); }
         }
 
@@ -101,7 +96,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        /* รูปเด็กดุ๊กดิ๊ก - ตั้งค่าสมมาตรซ้ายขวา */
         .child-avatar {
             width: 46px;
             height: 46px;
@@ -110,13 +104,8 @@
             flex-shrink: 0;
         }
 
-        .child-avatar.boy {
-            animation: floatLeft 3s ease-in-out infinite;
-        }
-
-        .child-avatar.girl {
-            animation: floatRight 3s ease-in-out infinite;
-        }
+        .child-avatar.boy { animation: floatLeft 3s ease-in-out infinite; }
+        .child-avatar.girl { animation: floatRight 3s ease-in-out infinite; }
 
         .header-title p {
             font-size: 14px;
@@ -159,14 +148,6 @@
             box-shadow: 0 6px 18px rgba(58, 152, 185, 0.25);
         }
 
-        .btn-view-all i {
-            transition: transform 0.3s;
-        }
-
-        .btn-view-all:hover i {
-            transform: rotate(15deg) scale(1.2);
-        }
-
         /* Main Form Card */
         .card {
             background: var(--card-bg);
@@ -176,10 +157,9 @@
             box-shadow: 0 15px 35px rgba(58, 152, 185, 0.12);
             border: 2px solid rgba(255, 255, 255, 0.9);
             position: relative;
-            overflow: visible; /* เปิดเพื่อไม่ให้โมเดลสัตว์โดนตัดขอบ */
+            overflow: visible;
         }
 
-        /* แถบเส้นขอบตกแต่งด้านบน */
         .card::before {
             content: "";
             position: absolute;
@@ -191,7 +171,6 @@
             animation: pulseGlow 4s infinite alternate;
         }
 
-        /* ตัวการ์ตูนสัตว์ตกแต่ง จัดวางสมมาตรซ้าย-ขวาที่ขอบบนของการ์ด */
         .mascot-animal {
             position: absolute;
             width: 40px;
@@ -201,15 +180,8 @@
             filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
         }
 
-        .mascot-cat { 
-            left: 20px; 
-            animation: floatLeft 3.5s infinite ease-in-out; 
-        }
-
-        .mascot-bear { 
-            right: 20px; 
-            animation: floatRight 3.5s infinite ease-in-out; 
-        }
+        .mascot-cat { left: 20px; animation: floatLeft 3.5s infinite ease-in-out; }
+        .mascot-bear { right: 20px; animation: floatRight 3.5s infinite ease-in-out; }
 
         .form-group {
             margin-bottom: 22px;
@@ -239,12 +211,6 @@
             transition: 0.3s;
         }
 
-        .form-group:hover .form-label i {
-            transform: scale(1.15) rotate(-8deg);
-            background: var(--primary-blue);
-            color: white;
-        }
-
         .form-control, .form-select, textarea {
             width: 100%;
             padding: 14px 16px;
@@ -265,36 +231,131 @@
             transform: translateY(-1px);
         }
 
-        /* Upload Multi Images Zone */
-        .upload-zone {
-            border: 2px dashed #9bc8d8;
-            border-radius: 16px;
-            padding: 22px 15px;
-            text-align: center;
-            background: linear-gradient(180deg, #f2f9fc 0%, #eaf5f8 100%);
+        /* 🔴🟡🟢 Urgency Level Selector Styles */
+        .urgency-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .urgency-card {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border: 2px solid #dbebf0;
+            border-radius: 14px;
+            background: #ffffff;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.25s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        .urgency-card input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 12px;
+            outline: none;
+            transition: 0.2s;
+            flex-shrink: 0;
             position: relative;
         }
 
-        .upload-zone:hover {
+        .urgency-card input[type="radio"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: currentColor;
+        }
+
+        .urgency-card .urgency-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .urgency-card .urgency-title {
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .urgency-card .urgency-desc {
+            font-size: 12px;
+            color: #708090;
+            margin-top: 2px;
+        }
+
+        /* Highlight States for Urgency Selection */
+        .urgency-card.red input[type="radio"] { color: #dc2626; }
+        .urgency-card.red:has(input:checked) {
+            border-color: #fca5a5;
+            background: #fef2f2;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.12);
+        }
+
+        .urgency-card.yellow input[type="radio"] { color: #d97706; }
+        .urgency-card.yellow:has(input:checked) {
+            border-color: #fde68a;
+            background: #fffbeb;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12);
+        }
+
+        .urgency-card.green input[type="radio"] { color: #16a34a; }
+        .urgency-card.green:has(input:checked) {
+            border-color: #86efac;
+            background: #f0fdf4;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12);
+        }
+
+        /* 📸 Camera/Gallery Dual Action Buttons */
+        .media-action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-media-trigger {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 10px;
+            border: 2px dashed #9bc8d8;
+            border-radius: 16px;
+            background: linear-gradient(180deg, #f2f9fc 0%, #eaf5f8 100%);
+            color: var(--primary-blue);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .btn-media-trigger:hover {
             background: #e1f1f6;
             border-color: var(--primary-blue);
-            transform: scale(1.01);
+            transform: translateY(-2px);
         }
 
-        .upload-icon {
-            font-size: 34px;
-            color: var(--primary-blue);
+        .btn-media-trigger i {
+            font-size: 26px;
             margin-bottom: 6px;
-            display: inline-block;
-            transition: transform 0.3s;
         }
 
-        .upload-zone:hover .upload-icon {
-            animation: wiggle 0.5s ease-in-out infinite;
+        .btn-media-trigger span {
+            font-size: 13px;
+            font-weight: 600;
         }
 
+        /* Preview Grid */
         .preview-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -321,14 +382,12 @@
 
         .btn-remove-img {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 5px; right: 5px;
             background: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 26px;
-            height: 26px;
+            width: 26px; height: 26px;
             font-size: 12px;
             cursor: pointer;
             z-index: 2;
@@ -336,9 +395,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        .btn-remove-img:hover {
-            transform: scale(1.2);
-        }
+        .btn-remove-img:hover { transform: scale(1.2); }
 
         /* Submit Button */
         .btn-submit {
@@ -366,14 +423,6 @@
             background: linear-gradient(135deg, #2e7a96 0%, #419684 100%);
         }
 
-        .btn-submit i {
-            transition: transform 0.3s;
-        }
-
-        .btn-submit:hover i {
-            transform: translateX(4px) rotate(-10deg);
-        }
-
         /* Success Card */
         .success-card {
             display: none;
@@ -394,24 +443,12 @@
             box-shadow: 0 4px 12px rgba(82, 171, 152, 0.15);
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
-            .child-avatar {
-                width: 36px;
-                height: 36px;
-            }
-            .header-title h1 {
-                font-size: 17px;
-                gap: 6px;
-            }
-            .card {
-                padding: 25px 18px 20px;
-            }
-            .mascot-animal {
-                width: 34px;
-                height: 34px;
-                top: -18px;
-            }
+            .child-avatar { width: 36px; height: 36px; }
+            .header-title h1 { font-size: 17px; gap: 6px; }
+            .card { padding: 25px 18px 20px; }
+            .mascot-animal { width: 34px; height: 34px; top: -18px; }
+            .media-action-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -419,7 +456,7 @@
 
     <div class="container">
         
-        <!-- ส่วนหัวเรื่อง (บาลานซ์ เด็กชาย ซ้าย - เด็กหญิง ขวา) -->
+        <!-- ส่วนหัวเรื่อง -->
         <div class="header-title">
             <h1>
                 <img src="https://api.iconify.design/emojione-v1:boy.svg" class="child-avatar boy" alt="เด็กชายสวัสดี">
@@ -429,7 +466,7 @@
             <p>🐾 ระบบรับเรื่องและติดตามปัญหาความเดือดร้อนของชุมชน</p>
         </div>
 
-        <!-- ปุ่ม ดูเรื่องร้องเรียนทั้งหมด ด้านบน -->
+        <!-- ปุ่ม ดูเรื่องร้องเรียนทั้งหมด -->
         <div class="top-nav">
             <a href="public-feed.html" class="btn-view-all">
                 <i class="fa-solid fa-list-check"></i> ดูเรื่องร้องเรียนทั้งหมด 🔍
@@ -438,7 +475,6 @@
 
         <!-- ฟอร์มกรอกข้อมูล -->
         <div class="card" id="formCard">
-            <!-- การ์ตูนสัตว์ตกแต่งขนาบข้าง ซ้าย-ขวา แบบบาลานซ์ -->
             <img src="https://api.iconify.design/noto:cat-face.svg" class="mascot-animal mascot-cat" alt="แมวน่ารัก">
             <img src="https://api.iconify.design/noto:bear.svg" class="mascot-animal mascot-bear" alt="หมีน่ารัก">
 
@@ -461,6 +497,36 @@
                     </select>
                 </div>
 
+                <!-- 🔴🟡🟢 เพิ่มส่วนระดับความเร่งด่วน -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-triangle-exclamation"></i> ระดับความเร่งด่วน</label>
+                    <div class="urgency-options">
+                        <label class="urgency-card red">
+                            <input type="radio" name="urgency" value="🔴 ด่วนที่สุด" required>
+                            <div class="urgency-info">
+                                <span class="urgency-title" style="color: #dc2626;">🔴 ด่วนที่สุด</span>
+                                <span class="urgency-desc">เป็นอันตรายต่อประชาชน/อุบัติเหตุร้ายแรง</span>
+                            </div>
+                        </label>
+
+                        <label class="urgency-card yellow">
+                            <input type="radio" name="urgency" value="🟡 ปานกลาง" checked>
+                            <div class="urgency-info">
+                                <span class="urgency-title" style="color: #d97706;">🟡 ปานกลาง</span>
+                                <span class="urgency-desc">กระทบต่อการใช้ชีวิตประจำวัน</span>
+                            </div>
+                        </label>
+
+                        <label class="urgency-card green">
+                            <input type="radio" name="urgency" value="🟢 ทั่วไป">
+                            <div class="urgency-info">
+                                <span class="urgency-title" style="color: #16a34a;">🟢 ทั่วไป</span>
+                                <span class="urgency-desc">ความเดือดร้อนรำคาญ / ข้อเสนอแนะ</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="form-label"><i class="fa-solid fa-location-dot"></i> สถานที่เกิดเหตุ</label>
                     <input type="text" class="form-control" id="location" placeholder="เช่น ซอย 3 หน้าบ้านเลขที่ 12/4" required>
@@ -471,14 +537,27 @@
                     <textarea id="detail" rows="4" class="form-control" placeholder="อธิบายรายละเอียดความเดือดร้อน..."></textarea>
                 </div>
 
+                <!-- 📸 แยกปุ่มถ่ายรูป และ เลือกจากอัลบั้ม -->
                 <div class="form-group">
                     <label class="form-label"><i class="fa-solid fa-camera"></i> แนบรูปถ่ายประกอบ (สูงสุด 5 รูป)</label>
-                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                        <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                        <div style="font-size: 14px; font-weight: 600; color: #3a98b9;">กดตรงนี้เพื่อเลือกรูปภาพ 📸</div>
-                        <div style="font-size: 12px; color: #7c8c94; margin-top: 4px;">(แนบได้สูงสุด 5 รูป)</div>
-                        <input type="file" id="fileInput" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
+                    
+                    <div class="media-action-grid">
+                        <!-- ปุ่มที่ 1: สลับไปเปิดกล้องถ่ายรูปด้านหลังบนมือถือ -->
+                        <div class="btn-media-trigger" onclick="document.getElementById('cameraInput').click()">
+                            <i class="fa-solid fa-camera-retro"></i>
+                            <span>📷 ถ่ายรูปจากกล้อง</span>
+                        </div>
+
+                        <!-- ปุ่มที่ 2: เลือกจากคลังภาพในเครื่อง -->
+                        <div class="btn-media-trigger" onclick="document.getElementById('galleryInput').click()">
+                            <i class="fa-solid fa-images"></i>
+                            <span>🖼️ เลือกจากคลังภาพ</span>
+                        </div>
                     </div>
+
+                    <!-- Hidden Inputs -->
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleMultipleImages(this)">
+                    <input type="file" id="galleryInput" accept="image/*" multiple style="display: none;" onchange="handleMultipleImages(this)">
 
                     <div class="preview-grid" id="previewGrid"></div>
                 </div>
@@ -526,12 +605,13 @@
 
         let imageList = [];
 
-        // จัดการอัปโหลดรูปภาพได้สูงสุด 5 รูป
+        // จัดการอัปโหลดรูปภาพได้สูงสุด 5 รูป (ทั้งจากกล้องและคลังภาพ)
         window.handleMultipleImages = function(input) {
             const files = Array.from(input.files);
             
             if (imageList.length + files.length > 5) {
                 alert("สามารถแนบรูปภาพได้สูงสุดไม่เกิน 5 รูปครับ");
+                input.value = "";
                 return;
             }
 
@@ -605,11 +685,15 @@
             const randomStr = Math.floor(1000 + Math.random() * 9000);
             const ticketNo = `NM-${dateStr}-${randomStr}`;
 
+            // อ่านค่าระดับความเร่งด่วนที่ถูกเลือก
+            const selectedUrgency = document.querySelector('input[name="urgency"]:checked').value;
+
             try {
                 await addDoc(collection(db, "reports"), {
                     ticketNo: ticketNo,
                     topic: document.getElementById('topic').value,
                     category: document.getElementById('category').value,
+                    urgency: selectedUrgency, // บันทึกระดับความเร่งด่วนลง Database
                     location: document.getElementById('location').value,
                     detail: document.getElementById('detail').value,
                     images: imageList,
