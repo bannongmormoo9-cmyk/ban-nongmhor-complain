@@ -323,48 +323,41 @@
         }
 
         /* ------------------------------------------------------------- */
-        /* STYLES FOR OFFICIAL GOVERNMENT PRINT / PDF TEMPLATE           */
+        /* STYLES FOR PRINT/PDF TEMPLATE                                 */
         /* ------------------------------------------------------------- */
         #pdfExportContainer {
             display: none;
             background: white;
             font-family: 'TH Sarabun New', 'TH SarabunPSK', sans-serif;
             color: #000;
-            line-height: 1.3;
-            font-size: 16pt;
+            line-height: 1.25;
+            font-size: 14pt;
             width: 100%;
         }
 
         .gov-header {
             text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .gov-garuda {
-            width: 2.8cm;
-            height: auto;
-            margin: 0 auto 10px auto;
-            display: block;
+            margin-bottom: 12px;
         }
 
         .gov-title {
-            font-size: 20pt;
+            font-size: 18pt;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 4px;
         }
 
         .gov-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 8px;
+            margin-bottom: 8px;
         }
 
         .gov-table th, .gov-table td {
             border: 1px solid #000;
-            padding: 6pt 8pt;
-            font-size: 14pt;
+            padding: 4pt 6pt;
+            font-size: 12pt;
             vertical-align: top;
         }
 
@@ -375,46 +368,48 @@
         }
 
         .gov-section-title {
-            font-size: 16pt;
+            font-size: 13pt;
             font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 8px;
+            margin-top: 10px;
+            margin-bottom: 6px;
             border-bottom: 1px solid #000;
-            padding-bottom: 3px;
+            padding-bottom: 2px;
         }
 
         .gov-img-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 8px;
+            justify-content: center;
         }
 
         .gov-img-item {
             text-align: center;
-            border: 1px dashed #666;
-            padding: 5px;
-            width: 45%;
+            border: 1px solid #ccc;
+            padding: 4px;
+            width: 48%;
+            box-sizing: border-box;
         }
 
         .gov-img-item img {
             max-width: 100%;
-            max-height: 200px;
+            max-height: 160px; /* บีบขนาดรูปภาพให้พอดีหน้า A4 */
             object-fit: contain;
             display: block;
             margin: 0 auto;
         }
 
         .gov-footer-sign {
-            margin-top: 40px;
+            margin-top: 25px;
             float: right;
             width: 230px;
             text-align: center;
-            font-size: 15pt;
+            font-size: 13pt;
         }
 
         /* ------------------------------------------------------------- */
-        /* PRINT MEDIA STYLES (บังคับแสดงภาพ และจัดรูปแบบสำหรับบันทึก PDF)  */
+        /* PRINT MEDIA STYLES (สำหรับจัดพิมพ์กระดาษ A4 หน้าเดียวพอดี)   */
         /* ------------------------------------------------------------- */
         @media print {
             * {
@@ -424,16 +419,21 @@
             body {
                 background: white !important;
                 padding: 0 !important;
+                margin: 0 !important;
             }
             .container, .modal {
                 display: none !important;
             }
             #pdfExportContainer {
                 display: block !important;
+                width: 100% !important;
             }
             @page {
                 size: A4 portrait;
-                margin: 20mm 20mm 20mm 25mm;
+                margin: 10mm 12mm 10mm 12mm; /* ปรับ Margin กระชับ */
+            }
+            .gov-footer-sign {
+                page-break-inside: avoid;
             }
         }
     </style>
@@ -594,14 +594,12 @@
     </div>
 
     <!-- =================================================================== -->
-    <!-- PDF / PRINT TEMPLATE CONTAINER (โครงสร้างหนังสือราชการ)                -->
+    <!-- PDF / PRINT TEMPLATE CONTAINER (ไม่มีโลโก้ ปรับขนาด A4)                -->
     <!-- =================================================================== -->
     <div id="pdfExportContainer">
         <div class="gov-header">
-            <!-- ตราครุฑ SVG -->
-            <img class="gov-garuda" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'><path fill='%23B22222' d='M150 10 L165 50 L200 40 L180 75 L220 85 L185 110 L230 130 L180 145 L200 180 L160 170 L150 210 L140 170 L100 180 L120 145 L70 130 L115 110 L80 85 L120 75 L100 40 L135 50 Z'/></svg>" alt="ตราครุฑ">
             <div class="gov-title">รายงานผลการดำเนินการเรื่องร้องเรียน / ร้องทุกข์</div>
-            <div style="font-size: 15pt;">หมู่บ้านบ้านหนองหม้อ ตำบลหนองหม้อ</div>
+            <div style="font-size: 13pt;">หมู่บ้านบ้านหนองหม้อ ตำบลหนองหม้อ</div>
         </div>
 
         <div id="pdfBodyContent">
@@ -720,9 +718,9 @@
                 const imgCount = (item.images && item.images.length) ? item.images.length : (item.imageUrl ? 1 : 0);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><strong>${item.ticketNo}</strong></td>
-                    <td><small>${item.category || ''}</small><br><strong>${item.topic}</strong></td>
-                    <td>${item.location}</td>
+                    <td><strong>${item.ticketNo || ''}</strong></td>
+                    <td><small>${item.category || ''}</small><br><strong>${item.topic || ''}</strong></td>
+                    <td>${item.location || ''}</td>
                     <td>
                         <button class="btn-view-img" onclick="openModal('${item.id}')">
                             <i class="fa-solid fa-eye"></i> ดูข้อมูล (${imgCount} รูป)
@@ -779,7 +777,6 @@
             }
         };
 
-        /* ฟังก์ชั่นลบข้อมูล */
         window.deleteReport = async function(docId, ticketNo) {
             if (confirm(`คุณต้องการลบรายการเลขที่เรื่อง "${ticketNo}" ใช่หรือไม่?`)) {
                 try {
@@ -791,7 +788,6 @@
             }
         };
 
-        /* ฟังก์ชั่นแก้ไขข้อมูล */
         window.openEditModal = function(docId) {
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
@@ -835,31 +831,23 @@
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
 
-            document.getElementById('modalTopic').innerText = item.topic;
-            document.getElementById('modalTicketNo').innerText = 'เลขที่เรื่อง: ' + item.ticketNo;
-            document.getElementById('modalLocation').innerText = item.location;
+            document.getElementById('modalTopic').innerText = item.topic || '';
+            document.getElementById('modalTicketNo').innerText = 'เลขที่เรื่อง: ' + (item.ticketNo || '');
+            document.getElementById('modalLocation').innerText = item.location || '';
             document.getElementById('modalDetail').innerText = item.detail || 'ไม่มีข้อมูล';
 
             const gallery = document.getElementById('modalGallery');
             gallery.innerHTML = '';
 
-            let imgs = item.images || [];
-            if (imgs.length === 0 && item.imageUrl) {
-                imgs = [item.imageUrl];
-            }
-
+            let imgs = item.images || (item.imageUrl ? [item.imageUrl] : []);
             document.getElementById('modalImgCount').innerText = imgs.length;
 
-            if (imgs.length > 0) {
-                imgs.forEach(src => {
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.onclick = () => window.open(src, '_blank');
-                    gallery.appendChild(img);
-                });
-            } else {
-                gallery.innerHTML = '<p style="color: #999; grid-column: span 2;">(ไม่มีรูปภาพแนบมา)</p>';
-            }
+            imgs.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.onclick = () => window.open(url, '_blank');
+                gallery.appendChild(img);
+            });
 
             document.getElementById('detailModal').style.display = 'flex';
         };
@@ -868,136 +856,126 @@
             document.getElementById('detailModal').style.display = 'none';
         };
 
-        // ===================================================================
-        // 📄 SYSTEM PRINT / SAVE AS PDF (แก้ปัญหาหน้าว่าง + แก้ปัญหารูปไม่ติด 100%)
-        // ===================================================================
-
-        // ฟังก์ชั่นช่วยรอให้รูปภาพทั้งหมดใน container โหลดเสร็จก่อนเปิดหน้าพิมพ์
-        function waitForImagesToLoad(container) {
-            const images = container.getElementsByTagName('img');
-            const promises = [];
-
-            for (let img of images) {
-                if (!img.complete) {
-                    promises.push(new Promise((resolve) => {
-                        img.onload = resolve;
-                        img.onerror = resolve; // ข้ามรูปที่เสีย เพื่อไม่ให้ค้าง
-                    }));
-                }
-            }
-            return Promise.all(promises);
-        }
-
-        // 1. ส่งออกเอกสาร PDF แบบเดี่ยว
+        /* ฟังก์ชั่นสั่งพิมพ์รายการเดียว (โหลดรูปให้ครบก่อนเปิด Print Dialog) */
         window.exportSinglePDF = async function(docId) {
             const item = reportsData.find(r => r.id === docId);
             if (!item) return;
 
-            const pdfContainer = document.getElementById('pdfExportContainer');
-            const pdfBody = document.getElementById('pdfBodyContent');
-            
-            let imgs = item.images || [];
-            if (imgs.length === 0 && item.imageUrl) {
-                imgs = [item.imageUrl];
-            }
-
+            let imgs = item.images || (item.imageUrl ? [item.imageUrl] : []);
             let imgHTML = '';
             if (imgs.length > 0) {
-                imgHTML = `
-                    <div class="gov-section-title">รูปภาพประกอบสถานที่ / ปัญหาที่ได้รับแจ้ง</div>
-                    <div class="gov-img-grid">
-                        ${imgs.map((src, idx) => `
-                            <div class="gov-img-item">
-                                <img src="${src}" crossorigin="anonymous" />
-                                <div style="font-size: 12pt; margin-top: 4px;">ภาพที่ ${idx+1}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                imgHTML = `<div class="gov-section-title">รูปภาพประกอบ</div><div class="gov-img-grid">`;
+                imgs.forEach(url => {
+                    imgHTML += `<div class="gov-img-item"><img src="${url}" crossorigin="anonymous"></div>`;
+                });
+                imgHTML += `</div>`;
             }
 
-            pdfBody.innerHTML = `
-                <table style="width: 100%; font-size: 16pt; margin-bottom: 15px;">
+            const html = `
+                <table class="gov-table">
                     <tr>
-                        <td style="width: 65%;"><strong>เลขที่เรื่อง:</strong> ${item.ticketNo || '-'}</td>
-                        <td><strong>วันที่บันทึก:</strong> ${new Date().toLocaleDateString('th-TH')}</td>
+                        <td style="width: 20%;"><strong>เลขที่เรื่อง:</strong></td>
+                        <td style="width: 30%;">${item.ticketNo || '-'}</td>
+                        <td style="width: 20%;"><strong>วันที่แจ้ง:</strong></td>
+                        <td style="width: 30%;">${item.createdAt ? new Date(item.createdAt.seconds * 1000).toLocaleDateString('th-TH') : '-'}</td>
                     </tr>
                     <tr>
-                        <td><strong>ประเภทเรื่อง:</strong> ${item.category || '-'}</td>
-                        <td><strong>สถานะปัจจุบัน:</strong> ${item.status || '-'}</td>
+                        <td><strong>ประเภทเรื่อง:</strong></td>
+                        <td>${item.category || '-'}</td>
+                        <td><strong>สถานะเรื่อง:</strong></td>
+                        <td>${item.status || '-'}</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><strong>หน่วยงานรับผิดชอบ:</strong> ${item.assignedDepartment || 'ยังไม่ได้ระบุ'}</td>
+                        <td><strong>หัวข้อเรื่อง:</strong></td>
+                        <td colspan="3">${item.topic || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>สถานที่เกิดเหตุ:</strong></td>
+                        <td colspan="3">${item.location || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>รายละเอียด:</strong></td>
+                        <td colspan="3">${item.detail || '-'}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>หน่วยงานรับผิดชอบ:</strong></td>
+                        <td colspan="3">${item.assignedDepartment || 'ยังไม่ระบุ'}</td>
                     </tr>
                 </table>
-
-                <div class="gov-section-title">รายละเอียดข้อมูลเรื่องร้องเรียน</div>
-                <p><strong>หัวข้อเรื่อง:</strong> ${item.topic || '-'}</p>
-                <p><strong>สถานที่เกิดเหตุ/จุดสังเกต:</strong> ${item.location || '-'}</p>
-                <p style="margin-top: 8px;"><strong>รายละเอียดปัญหา:</strong></p>
-                <div style="text-indent: 25px; text-align: justify; margin-bottom: 15px;">
-                    ${item.detail || 'ไม่มีข้อมูลรายละเอียดเพิ่มเติม'}
-                </div>
-
                 ${imgHTML}
             `;
 
-            // แสดง Container ชั่วคราวเพื่อให้เบราว์เซอร์ดาวน์โหลดรูปภาพ
+            const pdfContainer = document.getElementById('pdfExportContainer');
+            document.getElementById('pdfBodyContent').innerHTML = html;
+
+            // แสดงคอนเทนเนอร์ชั่วคราวเพื่อเรนเดอร์รูป
             pdfContainer.style.display = 'block';
 
-            // หน่วงเวลารอรูปภาพโหลดเสร็จสมบูรณ์ก่อนเปิดหน้าสั่งพิมพ์
-            await waitForImagesToLoad(pdfContainer);
+            // รอจนกว่ารูปภาพทั้งหมดจะถูก โหลดเสร็จสมบูรณ์
+            const images = pdfContainer.querySelectorAll('img');
+            const promises = Array.from(images).map(img => {
+                if (img.complete) return Promise.resolve();
+                return new Promise(resolve => {
+                    img.onload = resolve;
+                    img.onerror = resolve; // ป้องกันค้างถ้ารูปเสีย
+                });
+            });
 
-            // เปิดหน้าสั่งพิมพ์ของ Browser
+            await Promise.all(promises);
+
+            // สั่งพิมพ์
             window.print();
 
-            // ซ่อน Container กลับตามเดิมเมื่อสั่งพิมพ์เสร็จ
+            // ซ่อนคอนเทนเนอร์กลับ
             pdfContainer.style.display = 'none';
         };
 
-        // 2. ส่งออกเอกสารสรุปตาราง PDF รวม
-        window.exportSummaryPDF = async function() {
+        /* สั่งพิมพ์สรุปภาพรวมทั้งหมด */
+        window.exportSummaryPDF = function() {
             if (currentFilteredData.length === 0) {
-                alert("ไม่มีข้อมูลสำหรับส่งออก PDF");
+                alert("ไม่มีข้อมูลที่จะพิมพ์");
                 return;
             }
 
-            const pdfContainer = document.getElementById('pdfExportContainer');
-            const pdfBody = document.getElementById('pdfBodyContent');
-            
-            let rowsHTML = currentFilteredData.map((item, index) => `
-                <tr>
-                    <td style="text-align: center;">${index + 1}</td>
-                    <td style="text-align: center;">${item.ticketNo || '-'}</td>
-                    <td><strong>${item.topic}</strong><br><small>${item.category || ''}</small></td>
-                    <td>${item.location}</td>
-                    <td>${item.assignedDepartment || '-'}</td>
-                    <td style="text-align: center;">${item.status}</td>
-                </tr>
-            `).join('');
+            let tableRows = '';
+            currentFilteredData.forEach((item, index) => {
+                tableRows += `
+                    <tr>
+                        <td style="text-align: center;">${index + 1}</td>
+                        <td style="text-align: center;">${item.ticketNo || '-'}</td>
+                        <td>${item.topic || '-'}</td>
+                        <td>${item.location || '-'}</td>
+                        <td style="text-align: center;">${item.status || '-'}</td>
+                        <td style="text-align: center;">${item.assignedDepartment || '-'}</td>
+                    </tr>
+                `;
+            });
 
-            pdfBody.innerHTML = `
-                <p style="font-size: 15pt; margin-bottom: 10px;"><strong>สรุปรายการเรื่องร้องเรียนทั้งหมด จำนวน:</strong> ${currentFilteredData.length} รายการ</p>
+            const html = `
+                <div class="gov-section-title" style="text-align: center;">ตารางสรุปรายงานเรื่องร้องเรียน (จำนวนทั้งหมด ${currentFilteredData.length} รายการ)</div>
                 <table class="gov-table">
                     <thead>
                         <tr>
                             <th style="width: 8%;">ลำดับ</th>
-                            <th style="width: 18%;">เลขที่เรื่อง</th>
-                            <th>หัวข้อ / ประเภท</th>
-                            <th style="width: 22%;">สถานที่</th>
-                            <th style="width: 18%;">หน่วยงานรับผิดชอบ</th>
-                            <th style="width: 16%;">สถานะ</th>
+                            <th style="width: 17%;">เลขที่เรื่อง</th>
+                            <th style="width: 30%;">หัวข้อเรื่อง</th>
+                            <th style="width: 20%;">สถานที่</th>
+                            <th style="width: 15%;">สถานะ</th>
+                            <th style="width: 10%;">หน่วยงาน</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${rowsHTML}
+                        ${tableRows}
                     </tbody>
                 </table>
             `;
 
+            const pdfContainer = document.getElementById('pdfExportContainer');
+            document.getElementById('pdfBodyContent').innerHTML = html;
             pdfContainer.style.display = 'block';
-            await waitForImagesToLoad(pdfContainer);
+            
             window.print();
+            
             pdfContainer.style.display = 'none';
         };
     </script>
