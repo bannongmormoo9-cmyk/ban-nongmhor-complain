@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ติดตามสถานะการแจ้งเรื่อง | บ้านหนองหม้อ</title>
+    
     <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -133,6 +134,11 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-search:hover {
+            background: var(--primary-dark);
         }
 
         /* Result Display */
@@ -199,7 +205,7 @@
 
             <div class="search-box">
                 <input type="text" id="ticketInput" class="search-input" placeholder="เช่น NM-20260810-XXXX">
-                <button class="btn-search" onclick="searchTicket()"><i class="fa-solid fa-magnifying-glass"></i> ค้นหา</button>
+                <button class="btn-search" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i> ค้นหา</button>
             </div>
         </div>
 
@@ -263,18 +269,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Auto Search from URL Param (ถ้ามาจากหน้าแจ้งเรื่องสำเร็จ)
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ticket = urlParams.get('ticket');
-            if (ticket) {
-                document.getElementById('ticketInput').value = ticket;
-                searchTicket();
-            }
-        });
-
-        window.searchTicket = async function() {
-            const ticketNo = document.getElementById('ticketInput').value.trim();
+        // ฟังก์ชันค้นหาข้อมูล
+        async function searchTicket() {
+            const ticketInput = document.getElementById('ticketInput');
+            const ticketNo = ticketInput.value.trim();
+            
             if (!ticketNo) {
                 alert('กรุณากรอกรหัสติดตามเรื่อง');
                 return;
@@ -296,9 +295,9 @@
                     const data = doc.data();
                     document.getElementById('resStatus').innerText = data.status || '🟡 รอตรวจสอบ';
                     document.getElementById('resTicketNo').innerText = data.ticketNo;
-                    document.getElementById('resTopic').innerText = data.topic;
+                    document.getElementById('resTopic').innerText = data.topic || '-';
                     document.getElementById('resCategory').innerText = data.category || 'ทั่วไป';
-                    document.getElementById('resLocation').innerText = data.location;
+                    document.getElementById('resLocation').innerText = data.location || '-';
                     document.getElementById('resDetail').innerText = data.detail || 'ไม่มีรายละเอียดเพิ่มเติม';
                     document.getElementById('resDept').innerText = data.assignedDepartment || 'ยังไม่ได้มอบหมาย';
 
@@ -313,9 +312,37 @@
                 });
 
             } catch (err) {
+                console.error(err);
                 alert('เกิดข้อผิดพลาดในการค้นหา: ' + err.message);
             }
-        };
+        }
+
+        // เมื่อหน้าเว็บโหลดสมบูรณ์ ให้ทำการผูก Event Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            // 1. คลิกปุ่มค้นหา
+            const btnSearch = document.getElementById('btnSearch');
+            if (btnSearch) {
+                btnSearch.addEventListener('click', searchTicket);
+            }
+
+            // 2. กด Enter ในช่องค้นหา
+            const ticketInput = document.getElementById('ticketInput');
+            if (ticketInput) {
+                ticketInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        searchTicket();
+                    }
+                });
+            }
+
+            // 3. อ่านค่า ticket จาก URL Param (กรณีเปลี่ยนมาจากหน้าแจ้งเรื่องสำเร็จ)
+            const urlParams = new URLSearchParams(window.location.search);
+            const ticket = urlParams.get('ticket');
+            if (ticket && ticketInput) {
+                ticketInput.value = ticket;
+                searchTicket();
+            }
+        });
     </script>
 </body>
 </html>
